@@ -10,9 +10,52 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20170124183931) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "games", force: :cascade do |t|
+    t.string   "away_team"
+    t.string   "home_team"
+    t.integer  "season"
+    t.integer  "month"
+    t.integer  "day"
+    t.integer  "year"
+    t.string   "game_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "players", force: :cascade do |t|
+    t.string   "firstname"
+    t.string   "lastname"
+    t.string   "alphabet"
+    t.string   "playertag"
+    t.string   "team"
+    t.string   "position"
+    t.string   "playerlowcase"
+    t.string   "slug"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  create_table "plays", force: :cascade do |t|
+    t.string   "game_id"
+    t.integer  "event_id"
+    t.string   "away_team"
+    t.string   "home_team"
+    t.string   "description"
+    t.string   "mp4"
+    t.string   "tags"
+    t.integer  "month"
+    t.integer  "day"
+    t.integer  "year"
+    t.integer  "player_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["player_id"], name: "index_plays_on_player_id", using: :btree
+  end
+
+  add_foreign_key "plays", "players"
 end
