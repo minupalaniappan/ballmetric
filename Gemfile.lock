@@ -60,6 +60,7 @@ GEM
     concurrent-ruby (1.0.4)
     debug_inspector (0.0.2)
     erubis (2.7.0)
+    evil_icons (1.9.0)
     execjs (2.7.0)
     ffi (1.9.17)
     globalid (0.3.7)
@@ -168,6 +169,7 @@ PLATFORMS
 DEPENDENCIES
   byebug
   coffee-rails (~> 4.2)
+  evil_icons
   jbuilder (~> 2.5)
   jquery-rails
   listen (~> 3.0.5)

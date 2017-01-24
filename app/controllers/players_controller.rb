@@ -8,7 +8,7 @@ class PlayersController < ApplicationController
 			player = player['player']
 			player['position'] = POSITIONS[player['position']]
 			player['team'] = TEAMS[player['team']]
-			player['url'] = Player.where(playerlowcase: player['playerlowcase'])[0].base_uri
+			#player['url'] = Player.where(playerlowcase: player['playerlowcase'])[0].base_uri
 			player
 		}
 
