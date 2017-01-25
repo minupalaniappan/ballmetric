@@ -3,7 +3,7 @@
     "react-dom": "^15.4.2"
   },
   "scripts": {
-  	  "webpack:deploy": "webpack --config=webpack/webpack.config.js -p",
+  	  "webpack:deploy": "webpack --config=webpack/production.js -p",
 	  "heroku-postbuild": "npm run webpack:deploy"
   }
 }
