@@ -5,6 +5,10 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+#Resque
+gem "resque"
+#Resque web for frontend 
+gem 'resque-web', require: 'resque_web'
 #Friendly-URL
 gem "friendly_id"
 #Evil Icons
