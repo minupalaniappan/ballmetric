@@ -1,7 +1,9 @@
 import React, { PropTypes } from 'react';
 import Tag from './Tag'
 import Stream from './Stream'
-import _ from 'lodash';
+import _ from 'underscore';
+import Slide from 'rc-slider';
+
 
 const PlayerShow = React.createClass({
   propTypes: {

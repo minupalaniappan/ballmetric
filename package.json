@@ -1,1 +1,5 @@
-{}
+{
+  "dependencies": {
+    "react-dom": "^15.4.2"
+  }
+}

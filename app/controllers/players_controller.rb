@@ -15,7 +15,7 @@ class PlayersController < ApplicationController
 		@props = {
 			title: "Ballmetric",
 			players: _players_subtitled 	
-		}
+		}.to_json
 	end
 
 	def show
@@ -51,7 +51,7 @@ class PlayersController < ApplicationController
 			assortedTagsInDictionary: DICTION,
 			prependedArguments: @urlArgs,
 			url: request.original_url 	
-		}
+		}.to_json
 	end
 
 	private

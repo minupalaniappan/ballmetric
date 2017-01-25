@@ -12,11 +12,9 @@ module.exports = merge(config, {
   stats: {
     errorDetails: true
   },
-
   output: {
     pathinfo: true
   },
-
   plugins: [
     new webpack.LoaderOptionsPlugin({
       debug: true

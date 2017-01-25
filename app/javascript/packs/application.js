@@ -11,4 +11,5 @@ require('components/Stream')
 require('components/Tag')
 require('components/PlayerList')
 require('components/PlayerShow')
+require('components/Driver')
 
