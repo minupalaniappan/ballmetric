@@ -5,6 +5,8 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+#Friendly-URL
+gem "friendly_id"
 #Evil Icons
 gem 'evil_icons'
 #Seed Dump

@@ -8,7 +8,7 @@ class PlayersController < ApplicationController
 			player = player['player']
 			player['position'] = POSITIONS[player['position']]
 			player['team'] = TEAMS[player['team']]
-			#player['url'] = Player.where(playerlowcase: player['playerlowcase'])[0].base_uri
+			player['url'] = Player.where(playerlowcase: player['playerlowcase'])[0].base_uri
 			player
 		}
 
@@ -19,6 +19,7 @@ class PlayersController < ApplicationController
 	end
 
 	def show
+		ActiveRecord::Base.include_root_in_json = true
 		@urlArgs = params['q'].to_s
 		_player = Player.friendly.find(params[:id])
 		@name = _player.firstname + " " + _player.lastname
