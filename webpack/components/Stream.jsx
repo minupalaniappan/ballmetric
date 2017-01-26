@@ -1,4 +1,6 @@
 import React, { PropTypes } from 'react';
+const EvilIcon = require('./EvilIcon.jsx').default
+
 
 const Stream = React.createClass({
   propTypes: {

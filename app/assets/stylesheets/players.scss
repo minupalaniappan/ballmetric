@@ -1,3 +1,55 @@
 // Place all the styles related to the Players controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+html, body {
+	margin: 0px; 
+	padding: 0px; 
+	max-width: 900px; 
+	margin: 0 auto;
+}
+
+* {
+	font-family: "Open Sans";
+	text-decoration: none;
+	margin: 0px;
+}
+
+h1 {
+	font-weight: 600; 
+	color: #333; 
+	font-size: 2.5em;
+}
+
+h2 {
+	font-weight: 400; 
+	color: #D6D6D6; 
+	font-size: 1.6em;
+}
+
+h4 {
+	font-weight: 300; 
+	color: #4A4A4A; 
+	font-size: 1.4em;
+}
+
+.padding {
+	padding: 10px 0px;
+}
+
+.margin {
+	margin: 10px 0px;
+}
+
+.form-search {
+	width: 100%; 
+	border: none;
+	border-radius: 2px; 
+	border: 1px solid #D6D6D6;
+	background-color: white;
+	outline: none;
+	font-size: 1.5em; 
+	color: #333;
+	padding: 0.5em; 
+}
+

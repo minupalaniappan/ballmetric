@@ -15,9 +15,9 @@ var PlayerList = React.createClass({
     var components = players_to_render.map((player) => {
       if (player) {
         return (
-          <div key = {Math.random()}>
-            <a href={player.url}><p className="primary">{player.firstname} {player.lastname}</p></a>
-            <p className="description">{player.position} for the {player.team}</p>
+          <div key = {Math.random()} className = "padding">
+            <a href={player.url}><h2>{player.firstname} {player.lastname}</h2></a>
+            <h4 className="description">{player.position} for the {player.team}</h4>
           </div>
         )
       }
@@ -48,8 +48,8 @@ var PlayerList = React.createClass({
     var players_component = this.buildPlayerList(); 
     return (
       <div>
-        <p className="header">{this.props.title}</p>
-        <input className="form-search" type="text" name="filterplayer" value={this.state.value} onChange={this.handleChange} placeholder={"Search a player"}/>
+        <h1 className="padding">{this.props.title}</h1>
+        <input className="form-search margin" type="text" name="filterplayer" value={this.state.value} onChange={this.handleChange} placeholder={"Search a player"}/>
         {players_component}
       </div>
     );

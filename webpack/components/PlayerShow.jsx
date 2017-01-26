@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import _ from 'underscore';
-import Slide from 'rc-slider';
-
+const Tag = require('./Tag.jsx').default
+const Stream = require('./Stream.jsx').default
 
 const PlayerShow = React.createClass({
   propTypes: {
