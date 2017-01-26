@@ -5,6 +5,9 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+#Ruby Webpack
+gem "webpack-rails"
+
 #Resque
 gem "resque"
 #Resque web for frontend 
@@ -65,3 +68,5 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 #ruby version
 ruby "2.3.1"
+
+gem 'foreman'

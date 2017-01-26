@@ -12,5 +12,6 @@
     <%= yield %>
   </body>
   <footer>
+    <%= javascript_include_tag *webpack_asset_paths("application") %>
   </footer>
 </html>
