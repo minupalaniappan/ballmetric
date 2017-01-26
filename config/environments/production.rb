@@ -4,6 +4,9 @@ Rails.application.configure do
   config.serve_static_assets = true
   config.public_file_server.enabled = true
 
+  #asset error catching
+  config.assets.raise_asset_errors = true
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
