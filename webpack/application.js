@@ -1,4 +1,4 @@
-const webfonts = require('./')
+const webfonts = require('google-fonts')
 const Driver = require('./components/Driver.jsx').default
 Driver.execute();
 webfonts.add({
