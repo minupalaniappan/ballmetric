@@ -1288,6 +1288,10 @@ globals@^9.0.0:
   version "9.14.0"
   resolved "https://registry.yarnpkg.com/globals/-/globals-9.14.0.tgz#8859936af0038741263053b39d0e76ca241e4034"
 
+google-fonts@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/google-fonts/-/google-fonts-1.0.0.tgz#202e287a0c6272e3d651ac7e00c8f5aefc85b099"
+
 graceful-fs@^4.1.2, graceful-fs@^4.1.4:
   version "4.1.11"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"

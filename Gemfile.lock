@@ -61,8 +61,6 @@ GEM
       activerecord (>= 4.0.0)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
-    google-webfonts (0.2.0)
-      actionpack (>= 3.0.0)
     i18n (0.7.0)
     jbuilder (2.6.1)
       activesupport (>= 3.0.0, < 5.1)
@@ -204,7 +202,6 @@ DEPENDENCIES
   evil_icons
   foreman
   friendly_id
-  google-webfonts
   jbuilder (~> 2.5)
   jquery-rails
   listen (~> 3.0.5)
