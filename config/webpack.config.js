@@ -32,6 +32,18 @@ var config = {
     root: path.join(__dirname, '..', 'webpack')
   },
 
+  module: {
+    loaders: [
+      {
+        test: /\.(js|jsx)$/, loader: "babel-loader",
+        loaders: ['source-map', 'babel'],
+        query: {
+          presets: ['es2015', 'react']
+        }
+      }
+    ]
+  },
+
   plugins: [
     // must match config.webpack.manifest_filename
     new StatsPlugin('manifest.json', {
