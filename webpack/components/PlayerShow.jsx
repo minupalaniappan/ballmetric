@@ -1,6 +1,6 @@
+var DateRange = require ('date-range-js')
 import React, { PropTypes } from 'react';
 import _ from 'underscore';
-import DateRange from 'date-range-js'
 import Slider, { Range, Handle } from 'rc-slider';
 import Tooltip from 'rc-tooltip';
 const Tag = require('./Tag.jsx').default
