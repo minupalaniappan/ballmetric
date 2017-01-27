@@ -74,6 +74,9 @@ const PlayerShow = React.createClass({
       });
     }
   }, 
+  dateListener: function (event) {
+    
+  },
   fetchAvailableTags: function (args) {
     var distinct_tags = _.filter(this.props.assortedTags, (elem) =>{ 
       return (!args.includes(elem['value'])) 
