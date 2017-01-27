@@ -5,40 +5,56 @@
 html, body {
 	margin: 0px; 
 	padding: 0px; 
-	max-width: 900px; 
+	max-width: 1100px; 
 	margin: 0 auto;
 }
 
 * {
-	font-family: "Open Sans";
+	font-family: "Lato";
 	text-decoration: none;
 	margin: 0px;
+}
+
+a {
+	color: #2DC9FC;
 }
 
 h1 {
 	font-weight: 600; 
 	color: #333; 
-	font-size: 2.5em;
+	font-size: 2.3em;
 }
 
 h2 {
 	font-weight: 400; 
 	color: #D6D6D6; 
-	font-size: 1.6em;
+	font-size: 1.4em;
 }
 
 h4 {
-	font-weight: 300; 
+	font-weight: 400; 
 	color: #4A4A4A; 
-	font-size: 1.4em;
+	font-size: 1em;
+}
+
+.right {
+	text-align: right;
 }
 
 .padding {
 	padding: 10px 0px;
 }
 
+.padding-side {
+	padding: 0px 10px;
+}
+
 .margin {
 	margin: 10px 0px;
+}
+
+.margin-side {
+	margin: 0px 10px;
 }
 
 .form-search {
@@ -53,3 +69,80 @@ h4 {
 	padding: 0.5em; 
 }
 
+.inline {
+	display: inline-block;
+}
+
+.vert-top {
+	vertical-align: top;
+}
+
+.table-header {
+	display: table; 
+	width: 100%;
+	.parent {
+		display: table-cell;
+	}
+	.parent:nth-child(1) {
+		width: 70%
+	}
+}
+
+video {
+	max-width: 800px;
+}
+
+.tag {
+	padding: 10px; 
+	&:hover {
+		cursor: pointer;
+	}
+	border-bottom: 1px solid #DEDEDE;
+}
+
+.reset {
+	border-bottom: none; 
+	text-align: center; 
+	padding: 10px; 
+	background-color: #2DC9FC;
+	margin: 10px 0px; 
+	border-radius: 3px; 
+	h4 {
+		color: white; 
+		font-weight: 600;
+		font-size: 0.6em; 
+	}
+	width: 50px; 
+	margin: 20px auto;
+}
+
+.active {
+	color: #80D945; 
+	font-weight: 600
+}
+
+.available {
+	* { color: #333; font-weight: 600 }
+}
+
+.unavailable {
+	* { color: #D9D9D9; &:hover { cursor: default } }
+}
+
+.center {
+	text-align: center;
+}
+
+.loop-counter {
+	display: inline-block;
+	&:hover {
+		cursor: pointer;
+	}
+	.count {
+		background-color: #2DC9FC;
+		color: white;
+		padding: 10px;
+		border-radius: 3px;
+		display: inline-block;
+	}
+}

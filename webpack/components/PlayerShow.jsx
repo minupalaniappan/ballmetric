@@ -141,26 +141,34 @@ const PlayerShow = React.createClass({
   render: function() { 
     var tags = this.buildTags();
     var active_tags = this.divideTags(tags, true);
-    var active_tags_elem = (active_tags.length) ? (<div>{active_tags}</div>) : (<div><p className="description">{"Click on a play type below"}</p></div>)
+    var active_tags_elem = (active_tags.length) ? (<div>{active_tags}</div>) : (<div><p className="description">{"Currently no filters"}</p></div>)
     var available_tags = this.divideTags(tags, false);
-    var reset = (active_tags.length) ? (<div><Tag key = {Math.random()} disabled = {false} title = {'Reset'} active = {true} changeFilter = {this.tagListener}/></div>) : null
+    var reset = (active_tags.length) ? (<Tag key = {Math.random()} disabled = {false} title = {'RESET'} active = {true} changeFilter = {this.tagListener}/>) : null
+    var active_tag_comp = (active_tags.length) ? (
+       <div>
+          <h4 className = "center padding">Active tags</h4>
+          <div className="padding-side">{active_tags_elem}</div>
+          <div>{reset}</div>
+        </div>
+    ) : null; 
+
     return (
       <div>
         <div>
-          <a onClick = {this.back} href = "/players/"><p className="primary" style = {{fontSize: 1.1 + "em"}}>View a different player</p></a>
-          <p className = "header spacing_none">{this.props.name}</p>
-          <p className="description">{this.props.position + " for the " + this.props.team}</p>
-          <div><Stream streamables = {this.state.plays}
-                  index = {0} key = {Math.random()} name = {this.props.name} tagsToPush = {this.convertActiveTagsToURL(this.state.activeTags)} totalUrl = {this.props.url}/></div>
-          <div className = "max-width-video">
-            <div name="active">
-              <p>Active tags</p>
-              <div>{active_tags_elem}</div>
-              <div>{reset}</div>
-            </div>
-            <div name="avail">
-              <p>Available tags</p>
-              <div>{available_tags}</div>
+          <a onClick = {this.back} href = "/players/"><p className="primary padding margin" style = {{fontSize: 1 + "em"}}>View a different player</p></a>
+          <div className = "padding margin">
+            <h2 className = "header spacing_none">{this.props.name}</h2>
+            <h4 className="description">{this.props.position + " for the " + this.props.team}</h4>
+          </div>
+          <div className = "table-header">
+            <div className = "inline parent"><Stream streamables = {this.state.plays}
+                    index = {0} key = {Math.random()} name = {this.props.name} tagsToPush = {this.convertActiveTagsToURL(this.state.activeTags)} totalUrl = {this.props.url}/></div>
+            <div className = "max-width-video inline vert-top parent">
+              { active_tag_comp }
+              <div name="avail" className = "margin-side">
+                <h4 className = "center padding">Available tags</h4>
+                <div className="padding-side">{available_tags}</div>
+              </div>
             </div>
           </div>
         </div>

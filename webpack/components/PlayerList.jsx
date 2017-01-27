@@ -17,7 +17,7 @@ var PlayerList = React.createClass({
         return (
           <div key = {Math.random()} className = "padding">
             <a href={player.url}><h2>{player.firstname} {player.lastname}</h2></a>
-            <h4 className="description">{player.position} for the {player.team}</h4>
+            <h4 className="description padding">{player.position} for the {player.team}</h4>
           </div>
         )
       }

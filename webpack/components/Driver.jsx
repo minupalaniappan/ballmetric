@@ -23,7 +23,8 @@ var driverFunction = function (page) {
 				assortedTagsInDictionary: window.object.assortedTagsInDictionary, 
 				prependedArguments: window.object.prependedArguments, 
 				url: window.object.url,
-				events: window.object.events
+				events: window.object.events, 
+				position: window.object.position
 			}
 			ReactDOM.render(<PlayerShow {...PlayerShowProps} />, document.getElementById('playershow'));
 			break;

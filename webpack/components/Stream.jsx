@@ -66,13 +66,12 @@ const Stream = React.createClass({
     return (
       <div>
         <div>
-          <video id = "stream_frame" onEnded={this.videoEnded} autoPlay={true} controls = {true} width={640} height={360} src={stream} muted={false}/>
+          <video id = "stream_frame" onEnded={this.videoEnded} autoPlay={true} controls = {true} src={stream} muted={false}/>
         </div>
-        <div className= "max-width-video">
-          <div className = "loop-counter">
-            <p className = "count">{this.state.index+1}/{this.props.streamables.length} loops</p>
+        <div className= "max-width-video right margin">
+          <div className = "loop-counter" onClick = {this.copyToClipboard}>
+            <p className = "count">{this.state.index+1} of {this.props.streamables.length} plays</p>
           </div>
-          <div onClick = {this.copyToClipboard} className = "share-prop"><EvilIcon name="ei-share-apple" size="m"/></div>
         </div>
         <div className = "max-width-video">{(this.state.socialShown) ? url_box : ""}</div>
       </div>
