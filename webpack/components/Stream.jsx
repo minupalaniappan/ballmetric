@@ -50,7 +50,7 @@ const Stream = React.createClass({
   buildShareComponent: function () {
     var url = this.fetchShareURL(); 
     return (
-      <div><input value = {url} readOnly={true} className = "form-search"/></div> 
+      <div><input value = {url} readOnly={true} className = "form-search formPosition"/></div> 
     );
   }, 
   copyToClipboard: function () {
@@ -73,7 +73,7 @@ const Stream = React.createClass({
             <p className = "count">{this.state.index+1} of {this.props.streamables.length} plays</p>
           </div>
         </div>
-        <div className = "max-width-video">{(this.state.socialShown) ? url_box : ""}</div>
+        <div className = "max-width-video right">{(this.state.socialShown) ? url_box : ""}</div>
       </div>
     );
   }
