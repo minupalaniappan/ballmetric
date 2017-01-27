@@ -96,36 +96,41 @@ video {
 	&:hover {
 		cursor: pointer;
 	}
-	width: 24%;
+	width: 22%;
     height: 50px;
     line-height: 50px;
     text-align: center;
-    box-sizing: border-box;
-    outline: 1px solid #E3E3E3;
-    margin: 0 1px 1px 0;
-
+    background-color: #FAFAFA;
+    border: 1px solid #D1D1D1;
+    border-radius: 2px;
+    margin-right: 5px; 
+    margin-bottom: 5px;
     .tag-title {
-    	font-weight: 600; 
+    	font-weight: 400; 
     	font-size: 1em; 
-    	color: #333; 
+    	color: #5E5E5E; 
     }
 }
 
 .reset {
 	outline: none; 
-	font-size: 1em; 
-	background-color: #29CF2F;
+	font-size: 0.8em; 
+	background-color: #9EFFD8;
+	border: 1px solid #4BBF91;
 	.tag-title {
-		color: white;
+		color: #03995D;
+		font-weight: 600; 
 	}
 	max-width: 70px;
+	max-height: 50px; 
 	border-radius: 3px;
 }
 
 .active {
-	background-color: #73DE77;
+	background-color: #C7F1FF;
+	border: 1px solid #69BFDB;
 	.tag-title {
-		color: white;
+		color: #13B9F0;
 	}
 }
 

@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react';
 import _ from 'underscore';
+import Slider, { Range, Handle } from 'rc-slider';
+import Tooltip from 'rc-tooltip';
 const Tag = require('./Tag.jsx').default
 const Stream = require('./Stream.jsx').default
 
@@ -133,7 +135,49 @@ const PlayerShow = React.createClass({
 
     return notation;
   }, 
+  buildTimeSlider: function () {
+    var dates = _.map(this.props.events, (event)=> {
+      return {
+        day: event.day,
+        month: event.month,
+        year:event.year,
+        id: event.day + " " + event.month + " " + event.year,
+        date_object: new Date(event.year, event.month, event.day).toDateString()
+      }
+    });
+    var uniq_dates = _.uniq(dates, function(date){
+        return date.id;
+    });
+    var slider_props = {
+        allowCross: false,
+        pushable: false,
+        min: 0, 
+        max: uniq_dates.length-1, 
+        defaultValue: [0,uniq_dates.length],
+        handle: (props) => {
+          const { value, dragging, index } = props;
+          return (
+            <Tooltip
+              overlay={uniq_dates[value]['date_object']}
+              visible={dragging}
+              placement="top"
+              key={index}
+            >
+              <Handle {...props} />
+            </Tooltip>
+          );
+      }
+    }
+    var slider_date = (
+      <div>
+        <Range {...slider_props}/>
+      </div>  
+    );
+
+    return slider_date;
+  },
   render: function() { 
+    var slider = this.buildTimeSlider();
     var tags = this.buildTags();
     var reset = (this.state.activeTags.length) ? (<Tag key = {Math.random()} disabled = {false} title = {'RESET'} active = {true} changeFilter = {this.tagListener}/>) : null
     return (
@@ -147,6 +191,7 @@ const PlayerShow = React.createClass({
           <div>
             <div><Stream streamables = {this.state.plays}
                     index = {0} key = {Math.random()} name = {this.props.name} tagsToPush = {this.convertActiveTagsToURL(this.state.activeTags)} totalUrl = {this.props.url}/></div>
+            { slider }
             <div className="padding">
               { reset }
             </div>
