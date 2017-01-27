@@ -927,6 +927,10 @@ date-now@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
 
+date-range-js@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/date-range-js/-/date-range-js-1.0.0.tgz#d46430974d176664c9f6d93ee10dd6060625d377"
+
 debug@^2.1.1, debug@^2.2.0, debug@~2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.2.0.tgz#f87057e995b1a1f6ae6a4960664137bc56f039da"

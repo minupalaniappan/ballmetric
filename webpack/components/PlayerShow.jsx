@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import _ from 'underscore';
+import DateRange from 'date-range-js'
 import Slider, { Range, Handle } from 'rc-slider';
 import Tooltip from 'rc-tooltip';
 const Tag = require('./Tag.jsx').default
@@ -74,9 +75,6 @@ const PlayerShow = React.createClass({
       });
     }
   }, 
-  dateListener: function (event) {
-    
-  },
   fetchAvailableTags: function (args) {
     var distinct_tags = _.filter(this.props.assortedTags, (elem) =>{ 
       return (!args.includes(elem['value'])) 
@@ -110,7 +108,7 @@ const PlayerShow = React.createClass({
       var avail_tags = this.fetchAvailableTags(args); 
       var obj = {
         activeTags: args,
-        availableTags: avail_tags
+        availableTags: avail_tags, 
       }
 
       this.setState(obj,()=> {
@@ -138,6 +136,22 @@ const PlayerShow = React.createClass({
 
     return notation;
   }, 
+  dateListener: function (event, elems) {
+    var start_obj = event[elems[0]];
+    var end_obj = event[elems[1]];
+    var startDate = new Date(start_obj.year, start_obj.month, start_obj.day);
+    var endDate = new Date(end_obj.year, end_obj.month, end_obj.day);
+    var range = new DateRange(startDate, endDate);
+    var events = this.props.events.filter((play) => {
+      var date = new Date (play.year, play.month, play.day); 
+      return (range.contains(date))
+    }); 
+    this.setState({
+      plays: events,
+      activeTags: [],
+      availableTags: this.getUniqArr(this.props.assortedTags)
+    });
+  },
   buildTimeSlider: function () {
     var dates = _.map(this.props.events, (event)=> {
       return {
@@ -157,6 +171,7 @@ const PlayerShow = React.createClass({
         min: 0, 
         max: uniq_dates.length-1, 
         defaultValue: [0,uniq_dates.length],
+        onChange: this.dateListener.bind(null, uniq_dates),
         handle: (props) => {
           const { value, dragging, index } = props;
           return (
