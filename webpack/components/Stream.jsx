@@ -12,8 +12,7 @@ const Stream = React.createClass({
   },
   getInitialState: function () {
     return ({
-      index: this.props.index,
-      socialShown: false
+      index: this.props.index
     })
   },
   fetchLink: function (index) {
@@ -53,27 +52,19 @@ const Stream = React.createClass({
       <div><input value = {url} readOnly={true} className = "form-search formPosition"/></div> 
     );
   }, 
-  copyToClipboard: function () {
-    var tem = !this.state.socialShown;
-    this.setState({
-      socialShown: tem 
-    });
-  },
   render: function() {
     var url_box = this.buildShareComponent();
     var stream = this.buildVideoComponent();
     var game_id_ = this.props.streamables[this.state.index]['game_id'];
     return (
       <div>
-        <div>
-          <video id = "stream_frame" onEnded={this.videoEnded} autoPlay={true} controls = {true} src={stream} muted={false}/>
-        </div>
-        <div className= "max-width-video right margin">
-          <div className = "loop-counter" onClick = {this.copyToClipboard}>
-            <p className = "count">{this.state.index+1} of {this.props.streamables.length} plays</p>
+        <video id = "stream_frame" onEnded={this.videoEnded} autoPlay={true} controls = {true} src={stream} muted={false}/>
+        <div className= "max-width-video margin">
+          <div className = "loop-counter">
+            <p className = "count inline">{this.state.index+1} of {this.props.streamables.length} plays</p>
+            <div className = "inline margin-side">{ url_box }</div>
           </div>
         </div>
-        <div className = "max-width-video right">{(this.state.socialShown) ? url_box : ""}</div>
       </div>
     );
   }

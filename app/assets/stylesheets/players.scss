@@ -58,7 +58,6 @@ h4 {
 }
 
 .form-search {
-	width: 100%; 
 	border: none;
 	border-radius: 2px; 
 	border: 1px solid #D6D6D6;
@@ -67,6 +66,7 @@ h4 {
 	font-size: 1.5em; 
 	color: #333;
 	padding: 0.5em; 
+	width: 100%;
 }
 
 .inline {
@@ -89,44 +89,48 @@ h4 {
 }
 
 video {
-	max-width: 800px;
+	width: 100%;
 }
 
 .tag {
-	padding: 10px; 
 	&:hover {
 		cursor: pointer;
 	}
-	border-bottom: 1px solid #DEDEDE;
+	width: 24%;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    box-sizing: border-box;
+    outline: 1px solid #E3E3E3;
+    margin: 0 1px 1px 0;
+
+    .tag-title {
+    	font-weight: 600; 
+    	font-size: 1em; 
+    	color: #333; 
+    }
 }
 
 .reset {
-	border-bottom: none; 
-	text-align: center; 
-	padding: 10px; 
-	background-color: #2DC9FC;
-	margin: 10px 0px; 
-	border-radius: 3px; 
-	h4 {
-		color: white; 
-		font-weight: 600;
-		font-size: 0.6em; 
+	outline: none; 
+	font-size: 1em; 
+	background-color: #29CF2F;
+	.tag-title {
+		color: white;
 	}
-	width: 50px; 
-	margin: 20px auto;
+	max-width: 70px;
+	border-radius: 3px;
 }
 
 .active {
-	color: #80D945; 
-	font-weight: 600
+	background-color: #73DE77;
+	.tag-title {
+		color: white;
+	}
 }
 
 .available {
-	* { color: #333; font-weight: 600 }
-}
-
-.unavailable {
-	* { color: #D9D9D9; &:hover { cursor: default } }
+	* { color: green}
 }
 
 .center {
@@ -134,7 +138,6 @@ video {
 }
 
 .loop-counter {
-	display: inline-block;
 	&:hover {
 		cursor: pointer;
 	}
@@ -143,11 +146,23 @@ video {
 		color: white;
 		padding: 10px;
 		border-radius: 3px;
-		display: inline-block;
 	}
 }
 
 .formPosition {
-	max-width: 600px; 
 	padding: 10px;
+	font-size: 1em;
+}
+
+.fright {
+	float: right;
+}
+
+.margin-side {
+	margin: 0px 5px;
+}
+
+.parent {
+	display: flex;
+	flex-wrap: wrap;
 }

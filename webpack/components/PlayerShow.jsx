@@ -54,7 +54,7 @@ const PlayerShow = React.createClass({
   }, 
   tagListener: function (event) {
     var tag_value = event.target.getAttribute('value'); 
-    if (tag_value === 'Reset') {
+    if (tag_value === 'RESET') {
       this.setState({
           activeTags: [],
           availableTags: this.getUniqArr(this.props.assortedTags)
@@ -91,16 +91,11 @@ const PlayerShow = React.createClass({
         <Tag key = {Math.random()} disabled = {disable_flag} title = {title} active = {flag} changeFilter = {this.tagListener}/>
       )
     }); 
-
+    tags = tags.filter((tag) => {
+      return (!tag.props.disabled)
+    });
     return (tags); 
   }, 
-  divideTags: function (arr, flag) {
-    var tags = arr.map((elem) => {
-      if (elem.props.active === flag)
-        return elem;
-    }).filter(Boolean);
-    return (tags);
-  },
   componentDidMount: function () {
     if (this.props.prependedArguments) {
       var mappedElems = this.props.prependedArguments.split("-"); 
@@ -140,18 +135,7 @@ const PlayerShow = React.createClass({
   }, 
   render: function() { 
     var tags = this.buildTags();
-    var active_tags = this.divideTags(tags, true);
-    var active_tags_elem = (active_tags.length) ? (<div>{active_tags}</div>) : (<div><p className="description">{"Currently no filters"}</p></div>)
-    var available_tags = this.divideTags(tags, false);
-    var reset = (active_tags.length) ? (<Tag key = {Math.random()} disabled = {false} title = {'RESET'} active = {true} changeFilter = {this.tagListener}/>) : null
-    var active_tag_comp = (active_tags.length) ? (
-       <div>
-          <h4 className = "center padding">Active tags</h4>
-          <div className="padding-side">{active_tags_elem}</div>
-          <div>{reset}</div>
-        </div>
-    ) : null; 
-
+    var reset = (this.state.activeTags.length) ? (<Tag key = {Math.random()} disabled = {false} title = {'RESET'} active = {true} changeFilter = {this.tagListener}/>) : null
     return (
       <div>
         <div>
@@ -160,15 +144,14 @@ const PlayerShow = React.createClass({
             <h2 className = "header spacing_none">{this.props.name}</h2>
             <h4 className="description">{this.props.position + " for the " + this.props.team}</h4>
           </div>
-          <div className = "table-header">
-            <div className = "inline parent"><Stream streamables = {this.state.plays}
+          <div>
+            <div><Stream streamables = {this.state.plays}
                     index = {0} key = {Math.random()} name = {this.props.name} tagsToPush = {this.convertActiveTagsToURL(this.state.activeTags)} totalUrl = {this.props.url}/></div>
-            <div className = "max-width-video inline vert-top parent">
-              { active_tag_comp }
-              <div name="avail" className = "margin-side">
-                <h4 className = "center padding">Available tags</h4>
-                <div className="padding-side">{available_tags}</div>
-              </div>
+            <div className="padding">
+              { reset }
+            </div>
+            <div className = "max-width-video parent">
+              {tags}
             </div>
           </div>
         </div>
