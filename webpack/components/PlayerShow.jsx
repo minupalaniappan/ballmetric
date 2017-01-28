@@ -1,8 +1,8 @@
-var DateRange = require ('date-range-js')
 import React, { PropTypes } from 'react';
 import _ from 'underscore';
 import Slider, { Range, Handle } from 'rc-slider';
 import Tooltip from 'rc-tooltip';
+import DateRange from 'date-range-js'
 const Tag = require('./Tag.jsx').default
 const Stream = require('./Stream.jsx').default
 
@@ -141,6 +141,7 @@ const PlayerShow = React.createClass({
     var end_obj = event[elems[1]];
     var startDate = new Date(start_obj.year, start_obj.month, start_obj.day);
     var endDate = new Date(end_obj.year, end_obj.month, end_obj.day);
+    console.log(startDate, endDate);
     var range = new DateRange(startDate, endDate);
     var events = this.props.events.filter((play) => {
       var date = new Date (play.year, play.month, play.day); 
