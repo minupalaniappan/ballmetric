@@ -1,10 +1,13 @@
+import Moment from 'moment';
+import { extendMoment } from 'moment-range';
 import React, { PropTypes } from 'react';
 import _ from 'underscore';
 import Slider, { Range, Handle } from 'rc-slider';
 import Tooltip from 'rc-tooltip';
-import DateRange from 'date-range-js'
 const Tag = require('./Tag.jsx').default
 const Stream = require('./Stream.jsx').default
+const moment = extendMoment(Moment);
+
 
 const PlayerShow = React.createClass({
   propTypes: {
@@ -12,28 +15,28 @@ const PlayerShow = React.createClass({
     name: React.PropTypes.string,
     position: React.PropTypes.string,
     team: React.PropTypes.string,
-    assortedTags: React.PropTypes.array, 
-    assortedTagsInDictionary: React.PropTypes.object, 
-    prependedArguments: React.PropTypes.string, 
+    assortedTags: React.PropTypes.array,
+    assortedTagsInDictionary: React.PropTypes.object,
+    prependedArguments: React.PropTypes.string,
     url: React.PropTypes.string
   },
   getInitialState: function () {
     return ({
       plays: this.props['events'],
-      activeTags: [], 
+      activeTags: [],
       availableTags: this.getUniqArr(this.props.assortedTags)
     })
-  }, 
+  },
   destroyVideo: function () {
     var stream = document.getElementById('stream_frame');
     stream.pause();
     stream.src =""; // empty source
     stream.load();
-  }, 
+  },
   fetchPlaysUniqueTags: function () {
     var playstags = _.uniq(_.flatten(_.pluck(this.state['plays'], 'tags')));
     return (playstags);
-  }, 
+  },
   getUniqArr: function (arr) {
     return (_.uniq(_.pluck(arr, 'value')));
   },
@@ -46,7 +49,7 @@ const PlayerShow = React.createClass({
     if (args.length) {
       var returned_events = this.state.plays.map((play_) => {
         if (_.intersection(play_['tags'], args).length === args.length) {
-          return (play_); 
+          return (play_);
         }
       });
       returned_events = returned_events.filter(Boolean)
@@ -54,15 +57,15 @@ const PlayerShow = React.createClass({
     } else {
       return (this.props['events']);
     }
-  }, 
+  },
   tagListener: function (event) {
-    var tag_value = event.target.getAttribute('value'); 
+    var tag_value = event.target.getAttribute('value');
     if (tag_value === 'RESET') {
       this.setState({
           activeTags: [],
           availableTags: this.getUniqArr(this.props.assortedTags)
       }, () => {
-        this.fetchPlays(); 
+        this.fetchPlays();
       });
     } else {
       var new_tag_set = this.state.activeTags;
@@ -71,44 +74,44 @@ const PlayerShow = React.createClass({
           activeTags: new_tag_set,
           availableTags: this.fetchAvailableTags(new_tag_set)
       }, () => {
-        this.fetchPlays(); 
+        this.fetchPlays();
       });
     }
-  }, 
+  },
   fetchAvailableTags: function (args) {
-    var distinct_tags = _.filter(this.props.assortedTags, (elem) =>{ 
-      return (!args.includes(elem['value'])) 
+    var distinct_tags = _.filter(this.props.assortedTags, (elem) =>{
+      return (!args.includes(elem['value']))
     });
 
     distinct_tags = this.getUniqArr(distinct_tags);
-    return (distinct_tags); 
-  }, 
+    return (distinct_tags);
+  },
   buildTags: function () {
     var raw_tags = this.props.assortedTagsInDictionary;
     var total_props_tags = this.getUniqArr(this.props.assortedTags);
     var tags = total_props_tags.map((title) => {
       var flag = (this.state.activeTags.length && !this.state.availableTags.includes(title)) ? true : false
-      var tagEnabled = this.fetchPlaysUniqueTags();//.includes(tag_['value']); 
+      var tagEnabled = this.fetchPlaysUniqueTags();//.includes(tag_['value']);
       var disable_flag = (_.indexOf(tagEnabled, title) == -1) ? true : false
       return (
         <Tag key = {Math.random()} disabled = {disable_flag} title = {title} active = {flag} changeFilter = {this.tagListener}/>
       )
-    }); 
+    });
     tags = tags.filter((tag) => {
       return (!tag.props.disabled)
     });
-    return (tags); 
-  }, 
+    return (tags);
+  },
   componentDidMount: function () {
     if (this.props.prependedArguments) {
-      var mappedElems = this.props.prependedArguments.split("-"); 
+      var mappedElems = this.props.prependedArguments.split("-");
       var args = mappedElems.map((elem) => {
         return (this.props.assortedTagsInDictionary[elem]);
       });
-      var avail_tags = this.fetchAvailableTags(args); 
+      var avail_tags = this.fetchAvailableTags(args);
       var obj = {
         activeTags: args,
-        availableTags: avail_tags, 
+        availableTags: avail_tags,
       }
 
       this.setState(obj,()=> {
@@ -116,16 +119,16 @@ const PlayerShow = React.createClass({
       });
     } else {
       this.fetchPlays();
-    } 
+    }
   },
   back: function () {
-    this.destroyVideo(); 
-    window.location.href = "/players/"; 
-  }, 
+    this.destroyVideo();
+    window.location.href = "/players/";
+  },
   convertActiveTagsToURL: function () {
     var dict = this.props.assortedTags;
     var notation = this.state.activeTags.map((element) => {
-      var emptyVal; 
+      var emptyVal;
       dict.forEach((valToCompare) => {
         if (!emptyVal && element === valToCompare['value']) {
           emptyVal = valToCompare['type']
@@ -135,18 +138,18 @@ const PlayerShow = React.createClass({
     });
 
     return notation;
-  }, 
+  },
   dateListener: function (event, elems) {
     var start_obj = event[elems[0]];
     var end_obj = event[elems[1]];
     var startDate = new Date(start_obj.year, start_obj.month, start_obj.day);
     var endDate = new Date(end_obj.year, end_obj.month, end_obj.day);
-    console.log(startDate, endDate);
-    var range = new DateRange(startDate, endDate);
+    var range = moment.range(startDate, endDate);
     var events = this.props.events.filter((play) => {
-      var date = new Date (play.year, play.month, play.day); 
-      return (range.contains(date))
-    }); 
+      var date = new Date (play.year, play.month, play.day);
+      var date_moment = moment(date);
+      return (date_moment.within(range))
+    });
     this.setState({
       plays: events,
       activeTags: [],
@@ -169,8 +172,8 @@ const PlayerShow = React.createClass({
     var slider_props = {
         allowCross: false,
         pushable: false,
-        min: 0, 
-        max: uniq_dates.length-1, 
+        min: 0,
+        max: uniq_dates.length-1,
         defaultValue: [0,uniq_dates.length],
         onChange: this.dateListener.bind(null, uniq_dates),
         handle: (props) => {
@@ -190,12 +193,12 @@ const PlayerShow = React.createClass({
     var slider_date = (
       <div>
         <Range {...slider_props}/>
-      </div>  
+      </div>
     );
 
     return slider_date;
   },
-  render: function() { 
+  render: function() {
     var slider = this.buildTimeSlider();
     var tags = this.buildTags();
     var reset = (this.state.activeTags.length) ? (<Tag key = {Math.random()} disabled = {false} title = {'RESET'} active = {true} changeFilter = {this.tagListener}/>) : null
