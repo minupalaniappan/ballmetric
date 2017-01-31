@@ -1,20 +1,6 @@
 class AssignplaysJob < ActiveJob::Base
   queue_as :default
 
-  	def findMissingGames (player, games)
-  		if player.plays.length != 0
-	  		startDate = Date.new(player.plays.first['year'],
-	  				 player.plays.first['month'],
-	  				 player.plays.first['day']) + 1
-	  		endDate = Date.today-2
-	  		filtered_games = games.where(month: startDate.mon..endDate.mon, year: startDate.year..endDate.year, day: startDate.mday..endDate.mday)
-  			if filtered_games.length != 0
-  				filtered_games = filtered_games.where('home_team= ? OR away_team= ?', player['team'], player['team'])
-  				return filtered_games
-  			end
-  		end
-  	end
-
   	def fetchPlays (game)
 		game_id = game['game_id']
 		root_url = "http://stats.nba.com/stats/playbyplayv2?EndPeriod=10&EndRange=55800&GameID=#{game_id}&RangeType=2&Season=2016-17&StartPeriod=1&StartRange=0"
@@ -136,20 +122,9 @@ class AssignplaysJob < ActiveJob::Base
 		end
 	end
 
-  	def perform(*args)
+  	def perform(game, player)
    	 	# Do something later
-	    @GAMES = args[0].order('id ASC').all
-	    @players = args[1].order('id ASC').all
-	    @players.each {
-	    	|player|
-	    	games = findMissingGames player, @GAMES
-	    	if games != nil
-		    	games.each {
-		    		|game|
-		    		data = fetchPlays game
-		    		iteratePlays data, game, player
-		    	}
-		    end
-	    }
+	    data = fetchPlays game
+	   	iteratePlays data, game, player
   	end
 end

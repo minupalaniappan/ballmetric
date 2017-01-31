@@ -4,7 +4,7 @@ var PlayerList = React.createClass({
     title: React.PropTypes.string,
     players: React.PropTypes.array
   },
-  getInitialState: function () {
+  getInitialState: function () { 
     return ({
       players: this.props['players'], 
       value: ''
