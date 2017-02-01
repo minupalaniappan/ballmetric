@@ -1,4 +1,9 @@
+require "http"
+require "json"
+require "Excon"
+
 class AssignplaysJob < ActiveJob::Base
+  @queue = :plays
   queue_as :default
 
   	def fetchPlays (game)
@@ -25,7 +30,7 @@ class AssignplaysJob < ActiveJob::Base
 
 	def generateTags (description, player)
 		tokens = Array.new
-		if description.length != 0
+		if description != nil
 			arr_description = description.split(/[()]/)
 			arr_description.each {
 		        |splitText|
@@ -83,36 +88,27 @@ class AssignplaysJob < ActiveJob::Base
 			    	play_['mp4'] = fetchMP4 play_['event_id'], play_['game_id']
 			    	play_['description'] = if play[18] == game['home_team'] then play[7] else play[9] end
 					play_['tags'] = generateTags play_['description'], player
-					_recordplayer = @players.where(firstname: player['firstname'], 
-								    lastname: player['lastname'],
-								    team: player['team']).first
-
-					if !playerHasMP4 _recordplayer, play_['mp4']
-						_recordplayer.plays.create(play_['mp4'])
+					logger.debug play_
+					if !playerHasMP4 player, play_['mp4']
+						player.plays.create(play_)
 					end 
 
 			    when play[21] then
 			    	play_['mp4'] = fetchMP4 play_['event_id'], play_['game_id']
 			    	play_['description'] = if play[25] == game['home_team'] then play[7] else play[9] end
 					play_['tags'] = generateTags play_['description'], player
-					_recordplayer = @players.where(firstname: player['firstname'], 
-								    lastname: player['lastname'],
-								    team: player['team']).first
-
-					if !playerHasMP4 _recordplayer, play_['mp4']
-						_recordplayer.plays.create(play_['mp4'])
+					logger.debug play_
+					if !playerHasMP4 player, play_['mp4']
+						player.plays.create(play_)
 					end 
 
 		        when play[28] then
 		        	play_['mp4'] = fetchMP4 play_['event_id'], play_['game_id']
 		        	play_['description'] = if play[32] == game['home_team'] then play[7] else play[9] end
 					play_['tags'] = generateTags play_['description'], player
-					_recordplayer = @players.where(firstname: player['firstname'], 
-								    lastname: player['lastname'],
-								    team: player['team']).first
-
-					if !playerHasMP4 _recordplayer, play_['mp4']
-						_recordplayer.plays.create(play_['mp4'])
+					logger.debug play_
+					if !playerHasMP4 player, play_['mp4']
+						player.plays.create(play_)
 					end 
 
 			    else
@@ -124,6 +120,7 @@ class AssignplaysJob < ActiveJob::Base
 
   	def perform(game, player)
    	 	# Do something later
+   	 	logger.debug game
 	    data = fetchPlays game
 	   	iteratePlays data, game, player
   	end

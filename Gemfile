@@ -5,6 +5,18 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+#Resque logger
+gem "resque-logger"
+
+#Excon
+gem "excon"
+
+#JSON
+gem "json"
+
+#HTTP 
+gem "http"
+
 #Ruby Webpack
 gem "webpack-rails"
 
