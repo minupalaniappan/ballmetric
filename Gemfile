@@ -27,7 +27,7 @@ gem "http"
 gem "webpack-rails"
 
 #Resque
-gem "resque", require: 'resque/server'
+gem "resque"
 #Resque web for frontend 
 gem 'resque-web', require: 'resque_web'
 #Friendly-URL
