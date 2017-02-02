@@ -1,7 +1,3 @@
-require "http"
-require "json"
-require "Excon"
-
 class AssignplaysJob < ActiveJob::Base
 	extend Resque::Plugins::Retry
   	@log_name = "assignplays.log" # Optional - defaults to using the queue name.
