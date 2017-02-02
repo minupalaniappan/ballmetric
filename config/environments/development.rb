@@ -9,6 +9,9 @@ Rails.application.configure do
   # since you don't have to restart the web server when you make code changes.
   config.cache_classes = false  
 
+  #REDIS
+  ENV["REDISTOGO_URL"] = 'redis://h:pba5752e59a50e4117bc66ab490edf261db75032fea8cc7fc4fb5863b98de16c2@ec2-34-195-155-132.compute-1.amazonaws.com:6789'
+
   # Do not eager load code on boot.
   config.eager_load = false
 
