@@ -101,6 +101,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   #Redis
+  RAILS_RESQUE_REDIS='redis://h:pba5752e59a50e4117bc66ab490edf261db75032fea8cc7fc4fb5863b98de16c2@ec2-34-195-155-132.compute-1.amazonaws.com:6789'
   ENV["REDISTOGO_URL"] = 'redis://h:pba5752e59a50e4117bc66ab490edf261db75032fea8cc7fc4fb5863b98de16c2@ec2-34-195-155-132.compute-1.amazonaws.com:6789'
 
 end
