@@ -1,7 +1,7 @@
 require 'resque/tasks'
 
 namespace :resque do
-  task :setup do
+  task :setup => :environment do
     require 'resque'
     ENV['QUEUE'] = '*'
     Resque.redis = 'localhost:6379' unless Rails.env == 'production'
