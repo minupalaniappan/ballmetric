@@ -3,8 +3,11 @@ require "json"
 require "Excon"
 
 class AssignplaysJob < ActiveJob::Base
-  @queue = :plays
-  queue_as :default
+	extend Resque::Plugins::Retry
+  	@log_name = "assignplays.log" # Optional - defaults to using the queue name.
+  	queue_as :plays
+  	retry_limit = 3
+  	@retry_delay = 60
 
   	def fetchPlays (game)
 		game_id = game['game_id']
@@ -88,8 +91,9 @@ class AssignplaysJob < ActiveJob::Base
 			    	play_['mp4'] = fetchMP4 play_['event_id'], play_['game_id']
 			    	play_['description'] = if play[18] == game['home_team'] then play[7] else play[9] end
 					play_['tags'] = generateTags play_['description'], player
-					logger.debug play_
 					if !playerHasMP4 player, play_['mp4']
+						log = Logger.new 'log/resque_assignplay.log'
+  						log.debug play_
 						player.plays.create(play_)
 					end 
 
@@ -97,8 +101,9 @@ class AssignplaysJob < ActiveJob::Base
 			    	play_['mp4'] = fetchMP4 play_['event_id'], play_['game_id']
 			    	play_['description'] = if play[25] == game['home_team'] then play[7] else play[9] end
 					play_['tags'] = generateTags play_['description'], player
-					logger.debug play_
 					if !playerHasMP4 player, play_['mp4']
+						log = Logger.new 'log/resque_assignplay.log'
+  						log.debug play_
 						player.plays.create(play_)
 					end 
 
@@ -106,8 +111,9 @@ class AssignplaysJob < ActiveJob::Base
 		        	play_['mp4'] = fetchMP4 play_['event_id'], play_['game_id']
 		        	play_['description'] = if play[32] == game['home_team'] then play[7] else play[9] end
 					play_['tags'] = generateTags play_['description'], player
-					logger.debug play_
 					if !playerHasMP4 player, play_['mp4']
+						log = Logger.new 'log/resque_assignplay.log'
+  						log.debug play_
 						player.plays.create(play_)
 					end 
 
@@ -120,7 +126,6 @@ class AssignplaysJob < ActiveJob::Base
 
   	def perform(game, player)
    	 	# Do something later
-   	 	logger.debug game
 	    data = fetchPlays game
 	   	iteratePlays data, game, player
   	end

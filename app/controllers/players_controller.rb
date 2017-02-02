@@ -42,12 +42,21 @@ class PlayersController < ApplicationController
 			}.to_json)
 			play_
 		}
+		@playsToKeep.each {
+			|play_|
+			play_['date'] = Date.new(play_['year'], play_['month'], play_['day'])
+		}
+		@playsToKeepSorted = @playsToKeep.sort_by{|m| m['date']} #=> O(log n)
+		@playsToKeepSorted.each {
+			|d|
+			puts d['date']
+		}
 		@props = {
 			name: @name,
 			position: POSITIONS[@position],
 			team: TEAMS[@team],
 			assortedTags: DICTION_arr,
-			events: @playsToKeep,
+			events: @playsToKeepSorted,
 			assortedTagsInDictionary: DICTION,
 			prependedArguments: @urlArgs,
 			url: request.original_url 	

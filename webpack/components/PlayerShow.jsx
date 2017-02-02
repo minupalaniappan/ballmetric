@@ -163,7 +163,7 @@ const PlayerShow = React.createClass({
         month: event.month,
         year:event.year,
         id: event.day + " " + event.month + " " + event.year,
-        date_object: new Date(event.year, event.month, event.day).toDateString()
+        date_object: new Date(event.year, event.month-1, event.day).toDateString()
       }
     });
     var uniq_dates = _.uniq(dates, function(date){

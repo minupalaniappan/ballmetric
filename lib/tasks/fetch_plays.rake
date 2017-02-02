@@ -6,16 +6,14 @@ namespace :fetch_plays do
     	if games != nil
 	    	games.each {
 	    		|game|
-	    		Resque.enqueue(AssignplaysJob, game[0], player)
+	    		AssignplaysJob.perform_later game[0], player
 	    	}
 	    end
 	end
 
 	def findMissingGames (player, games)
   		if player.plays.length != 0
-	  		startDate = Date.new(player.plays.first['year'],
-	  				 player.plays.first['month'],
-	  				 player.plays.first['day']) + 1
+	  		startDate = Date.new(2017,1,1) + 1
 	  		endDate = Date.today-2
 	  		@games_arr = Array.new
 	  		(startDate..endDate).to_a.each {
