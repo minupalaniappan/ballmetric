@@ -1,10 +1,14 @@
-log_path = File.join Rails.root, 'log'
-config = {
-  folder:     log_path,                 # destination folder
-  class_name: Logger,                   # logger class name
-  class_args: [],  # logger additional parameters
-  level:      Logger::INFO,              # optional
-  formatter:  Logger::Formatter.new,    # optional
-}
+require 'resque/tasks'
 
-Resque.logger_config = config
+namespace :resque do
+  task :setup do
+    require 'resque'
+    ENV['QUEUE'] = '*'
+    Resque.redis = 'localhost:6379' unless Rails.env == 'production'
+  end
+end
+
+Resque.after_fork = Proc.new { ActiveRecord::Base.establish_connection } #this is necessary for production environments, otherwise your background jobs will start to fail when hit from many different connections.
+
+desc "Alias for resque:work (To run workers on Heroku)"
+task "jobs:work" => "resque:work"
