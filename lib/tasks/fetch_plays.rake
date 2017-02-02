@@ -1,14 +1,17 @@
 namespace :fetch_plays do
 	task :access => :environment do 
-		player = Player.find(1)
+		players = Player.all
 		@GAMES = Game.all
-		games = findMissingGames player, @GAMES
-    	if games != nil
-	    	games.each {
-	    		|game|
-	    		AssignplaysJob.perform_later game[0], player
-	    	}
-	    end
+		players.each {
+			|player|
+			games = findMissingGames player, @GAMES
+	    	if games != nil
+		    	games.each {
+		    		|game|
+		    		AssignplaysJob.perform_later game[0], player
+		    	}
+		    end
+		}
 	end
 
 	def findMissingGames (player, games)
