@@ -59,7 +59,7 @@ const Stream = React.createClass({
     return (
       <div>
         <div className = "center">
-          <video id = "stream_frame" onEnded={this.videoEnded} autoPlay={true} controls = {true} src={stream} muted={true}/>
+          <video id = "stream_frame" onEnded={this.videoEnded} autoPlay={false} controls = {true} src={stream} muted={true}/>
         </div>
         <div className= "margin">
           <div className = "loop-counter">
