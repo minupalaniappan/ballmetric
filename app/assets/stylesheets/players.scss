@@ -2,6 +2,51 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+@font-face {
+    font-family: 'Walsheim-Bold';
+    src:font-url('Bold.ttf') format('truetype');
+}  
+
+@font-face {
+    font-family: 'Walsheim Bold';
+    src:font-url('Bold.ttf') format('truetype');
+}  
+
+@font-face {
+    font-family: 'Walsheim Bold Oblique';
+    src:font-url('BoldOblique.ttf') format('truetype');
+}  
+
+@font-face {
+    font-family: 'Walsheim Light';
+    src:font-url('Light.ttf') format('truetype');
+}  
+
+@font-face {
+    font-family: 'Walsheim Light Oblique';
+    src:font-url('LightOblique.ttf') format('truetype');
+}  
+
+@font-face {
+    font-family: 'Walsheim Medium';
+    src:font-url('Medium.ttf') format('truetype');
+}  
+
+@font-face {
+    font-family: 'Walsheim Medium Oblique';
+    src:font-url('MediumOblique.ttf') format('truetype');
+}  
+
+@font-face {
+    font-family: 'Walsheim Regular';
+    src:font-url('Regular.ttf') format('truetype');
+}  
+
+@font-face {
+    font-family: 'Walsheim Thin';
+    src:font-url('Thin.ttf') format('truetype');
+}  
+
 html, body {
 	margin: 0px; 
 	padding: 0px; 
@@ -10,7 +55,6 @@ html, body {
 }
 
 * {
-	font-family: "Lato";
 	text-decoration: none;
 	margin: 0px;
 }
@@ -20,19 +64,19 @@ a {
 }
 
 h1 {
-	font-weight: 600; 
+	font-family: "Walsheim Medium";
 	color: #333; 
 	font-size: 2.3em;
 }
 
 h2 {
-	font-weight: 400; 
+	font-family: "Walsheim Regular";
 	color: #D6D6D6; 
 	font-size: 1.4em;
 }
 
 h4 {
-	font-weight: 400; 
+	font-family: "Walsheim Light";
 	color: #4A4A4A; 
 	font-size: 1em;
 }
@@ -170,4 +214,10 @@ video {
 .parent {
 	display: flex;
 	flex-wrap: wrap;
+}
+
+.playerListWrapper {
+	max-width: 500px;
+	margin: 0 auto;
+	padding-top: 40px;
 }

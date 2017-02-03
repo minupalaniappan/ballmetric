@@ -17,7 +17,7 @@ var PlayerList = React.createClass({
         return (
           <div key = {Math.random()} className = "padding">
             <a href={player.url}><h2>{player.firstname} {player.lastname}</h2></a>
-            <h4 className="description padding">{player.position} for the {player.team}</h4>
+            <h4 className="description">{player.position} for the {player.team}</h4>
           </div>
         )
       }
@@ -47,7 +47,7 @@ var PlayerList = React.createClass({
   render: function() {
     var players_component = this.buildPlayerList(); 
     return (
-      <div>
+      <div className="playerListWrapper">
         <h1 className="padding">{this.props.title}</h1>
         <input className="form-search margin" type="text" name="filterplayer" value={this.state.value} onChange={this.handleChange} placeholder={"Search a player"}/>
         {players_component}
