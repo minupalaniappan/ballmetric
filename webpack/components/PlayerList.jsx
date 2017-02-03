@@ -6,7 +6,7 @@ var PlayerList = React.createClass({
   },
   getInitialState: function () { 
     return ({
-      players: this.props['players'], 
+      players: [], 
       value: ''
     })
   },
@@ -39,6 +39,9 @@ var PlayerList = React.createClass({
         }
       });
 
+      if (this.state.value === "")
+        players_filtered = [];
+
       this.setState({
         players: players_filtered
       });
@@ -48,7 +51,8 @@ var PlayerList = React.createClass({
     var players_component = this.buildPlayerList(); 
     return (
       <div className="playerListWrapper">
-        <h1 className="padding">{this.props.title}</h1>
+        <h1 className="padding center">{this.props.title}</h1>
+        <h2 className="center">NBA player shot analysis</h2>
         <input className="form-search margin" type="text" name="filterplayer" value={this.state.value} onChange={this.handleChange} placeholder={"Search a player"}/>
         {players_component}
       </div>
