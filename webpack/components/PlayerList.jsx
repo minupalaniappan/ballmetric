@@ -51,10 +51,12 @@ var PlayerList = React.createClass({
     var players_component = this.buildPlayerList(); 
     return (
       <div className="playerListWrapper">
-        <h1 className="padding center">{this.props.title}</h1>
-        <h2 className="center">NBA player shot analysis</h2>
-        <input className="form-search margin" type="text" name="filterplayer" value={this.state.value} onChange={this.handleChange} placeholder={"Search a player"}/>
-        {players_component}
+        <h1 className="center">{this.props.title}</h1>
+        <h4 className="center light">Bringing shot search to the National Basketball Association</h4>
+        <div className="padding">
+          <input className="form-search" type="text" name="filterplayer" value={this.state.value} onChange={this.handleChange} placeholder={"Search a player"}/>
+        </div>
+        <div className="player_component">{players_component}</div>
       </div>
     );
   }

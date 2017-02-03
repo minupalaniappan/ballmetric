@@ -58,8 +58,10 @@ const Stream = React.createClass({
     var game_id_ = this.props.streamables[this.state.index]['game_id'];
     return (
       <div>
-        <video id = "stream_frame" onEnded={this.videoEnded} autoPlay={true} controls = {true} src={stream} muted={true}/>
-        <div className= "max-width-video margin">
+        <div className = "center">
+          <video id = "stream_frame" onEnded={this.videoEnded} autoPlay={true} controls = {true} src={stream} muted={true}/>
+        </div>
+        <div className= "margin">
           <div className = "loop-counter">
             <p className = "count inline">{this.state.index+1} of {this.props.streamables.length} plays</p>
             <div className = "inline margin-side">{ url_box }</div>

@@ -203,23 +203,22 @@ const PlayerShow = React.createClass({
     var tags = this.buildTags();
     var reset = (this.state.activeTags.length) ? (<Tag key = {Math.random()} disabled = {false} title = {'RESET'} active = {true} changeFilter = {this.tagListener}/>) : null
     return (
-      <div>
+      <div style = {{paddingTop: 50}}>
+        <div className = "center">
+          <h2 className = "header spacing_none">{this.props.name}</h2>
+          <h4 className="description">{this.props.position + " for the " + this.props.team}</h4>
+        </div>
         <div>
-          <a onClick = {this.back} href = "/players/"><p className="primary padding margin" style = {{fontSize: 1 + "em"}}>View a different player</p></a>
-          <div className = "padding margin">
-            <h2 className = "header spacing_none">{this.props.name}</h2>
-            <h4 className="description">{this.props.position + " for the " + this.props.team}</h4>
-          </div>
-          <div>
-            <div><Stream streamables = {this.state.plays}
-                    index = {0} key = {Math.random()} name = {this.props.name} tagsToPush = {this.convertActiveTagsToURL(this.state.activeTags)} totalUrl = {this.props.url}/></div>
+          <div className = "padding">
             { slider }
-            <div className="padding">
-              { reset }
-            </div>
-            <div className = "max-width-video parent">
-              {tags}
-            </div>
+          </div>
+          <div className = "padding"><Stream streamables = {this.state.plays}
+                  index = {0} key = {Math.random()} name = {this.props.name} tagsToPush = {this.convertActiveTagsToURL(this.state.activeTags)} totalUrl = {this.props.url}/></div>
+          <div className="padding">
+            { reset }
+          </div>
+          <div className = "parent">
+            {tags}
           </div>
         </div>
       </div>
