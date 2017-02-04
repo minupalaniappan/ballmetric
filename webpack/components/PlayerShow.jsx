@@ -202,6 +202,13 @@ const PlayerShow = React.createClass({
     var slider = this.buildTimeSlider();
     var tags = this.buildTags();
     var reset = (this.state.activeTags.length) ? (<div className = "padding"><Tag key = {Math.random()} disabled = {false} title = {'RESET'} active = {true} changeFilter = {this.tagListener}/></div>) : null
+    var stream = (<Stream streamables = {this.state.plays}
+                         index = {0} 
+                         key = {Math.random()} 
+                         name = {this.props.name} 
+                         tagsToPush = {this.convertActiveTagsToURL(this.state.activeTags)} 
+                         totalUrl = {this.props.url}
+                         wait={1000}/>);
     return (
       <div style = {{paddingTop: 50}}>
         <div className = "center">
@@ -212,8 +219,9 @@ const PlayerShow = React.createClass({
           <div className = "padding">
             { slider }
           </div>
-          <div className = "padding"><Stream streamables = {this.state.plays}
-                  index = {0} key = {Math.random()} name = {this.props.name} tagsToPush = {this.convertActiveTagsToURL(this.state.activeTags)} totalUrl = {this.props.url}/></div>
+          <div className = "padding">
+            {stream}
+          </div>
           <h4>Filter by shot type</h4>
           { reset }
           <div className = "parent padding">

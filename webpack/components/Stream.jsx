@@ -8,12 +8,28 @@ const Stream = React.createClass({
     index: React.PropTypes.number,
     name: React.PropTypes.string,
     tagsToPush: React.PropTypes.array,
-    totalUrl: React.PropTypes.string
+    totalUrl: React.PropTypes.string,
+    wait: React.PropTypes.number
   },
   getInitialState: function () {
     return ({
-      index: this.props.index
+      index: this.props.index,
+      hidden: true
     })
+  },
+  componentWillMount : function () {
+    var that = this;
+    setTimeout(function() {
+        that.show();
+    }, that.props.wait);
+  },
+  show: function () {
+    if (this.isMounted()) {
+      var currentState = this.state.hidden;
+      this.setState({
+        hidden: !currentState
+      });
+    }
   },
   fetchLink: function (index) {
     var src = this.props.streamables.map((elem) => {
@@ -52,22 +68,32 @@ const Stream = React.createClass({
       <div><input value = {url} readOnly={true} className = "form-search formPosition"/></div> 
     );
   }, 
+  control: function (event) {
+    if (event.target.paused)
+      event.target.play();
+    else
+      event.target.pause();
+  },
   render: function() {
     var url_box = this.buildShareComponent();
     var stream = this.buildVideoComponent();
     var game_id_ = this.props.streamables[this.state.index]['game_id'];
+    var video_block;
+    video_block = (!this.state.hidden)  ? (<div>
+                              <div className = "center" id = "videocontroller">
+                                <video id = "stream_frame" className="video" onClick={this.control} onEnded={this.videoEnded} autoPlay={true} controls = {false} src={stream} muted={true}/>
+                              </div>
+                              <div className= "margin">
+                                <div className = "loop-counter">
+                                  <p className = "count inline">{this.state.index+1} of {this.props.streamables.length} plays</p>
+                                  <div className = "inline margin-side">{ url_box }</div>
+                                </div>
+                              </div>
+                            </div>)
+                            :
+                            (<div className="overlay"><p>Loading...</p></div>);
     return (
-      <div>
-        <div className = "center">
-          <video id = "stream_frame" onEnded={this.videoEnded} autoPlay={false} controls = {true} src={stream} muted={true}/>
-        </div>
-        <div className= "margin">
-          <div className = "loop-counter">
-            <p className = "count inline">{this.state.index+1} of {this.props.streamables.length} plays</p>
-            <div className = "inline margin-side">{ url_box }</div>
-          </div>
-        </div>
-      </div>
+      <div>{video_block}</div>
     );
   }
 });

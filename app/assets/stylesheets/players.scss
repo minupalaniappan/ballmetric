@@ -224,6 +224,16 @@ h4 {
 	overflow-y: scroll;
 }
 
+.overlay {
+	width: 700px;
+	line-height: 400px; 
+	background-color: black; 
+	p {
+		text-align: center; 
+		color: white;
+	}
+}
+
 video {
 	max-width: 700px;
 }
