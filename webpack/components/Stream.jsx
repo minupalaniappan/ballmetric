@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-const EvilIcon = require('./EvilIcon.jsx').default
 
 
 const Stream = React.createClass({
@@ -7,8 +6,6 @@ const Stream = React.createClass({
     streamables: React.PropTypes.array,
     index: React.PropTypes.number,
     name: React.PropTypes.string,
-    tagsToPush: React.PropTypes.array,
-    totalUrl: React.PropTypes.string,
     wait: React.PropTypes.number
   },
   getInitialState: function () {
@@ -51,43 +48,23 @@ const Stream = React.createClass({
   buildVideoComponent: function () {
     return (this.fetchLink(this.state.index));
   }, 
-  fetchShareURL: function () {
-    var str_cp = "?q=" + this.props.tagsToPush.join("-");
-    if (this.props.totalUrl) {
-      if (this.props.totalUrl.indexOf('?') >= 0) {
-        return (this.props.totalUrl.split("?")[0] + str_cp)
-      } else {
-        return(this.props.totalUrl + str_cp)
-      }
-    }
-    return (null);
-  },
-  buildShareComponent: function () {
-    var url = this.fetchShareURL(); 
-    return (
-      <div><input value = {url} readOnly={true} className = "form-search formPosition"/></div> 
-    );
-  }, 
   control: function (event) {
     if (event.target.paused)
       event.target.play();
     else
       event.target.pause();
   },
+  fullscreen: function (event) {
+    console.log(event.target);
+    event.target.webkitRequestFullScreen();
+  },
   render: function() {
-    var url_box = this.buildShareComponent();
     var stream = this.buildVideoComponent();
     var game_id_ = this.props.streamables[this.state.index]['game_id'];
     var video_block;
     video_block = (!this.state.hidden)  ? (<div>
-                              <div className = "center" id = "videocontroller">
-                                <video id = "stream_frame" className="video" onClick={this.control} onEnded={this.videoEnded} autoPlay={true} controls = {false} src={stream} muted={true}/>
-                              </div>
-                              <div className= "margin">
-                                <div className = "loop-counter">
-                                  <p className = "count inline">{this.state.index+1} of {this.props.streamables.length} plays</p>
-                                  <div className = "inline margin-side">{ url_box }</div>
-                                </div>
+                              <div className = "center padding" id = "videocontroller">
+                                <video id = "stream_frame" className="video" onClick={this.control} onDoubleClick = {this.fullscreen} onEnded={this.videoEnded} autoPlay={true} controls = {false} src={stream} muted={true} allowFullScreen={true}/>
                               </div>
                             </div>)
                             :

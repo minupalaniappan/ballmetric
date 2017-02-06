@@ -7,6 +7,8 @@ import Tooltip from 'rc-tooltip';
 const Tag = require('./Tag.jsx').default
 const Stream = require('./Stream.jsx').default
 const moment = extendMoment(Moment);
+const EvilIcon = require('./EvilIcon.jsx').default
+
 
 
 const PlayerShow = React.createClass({
@@ -198,7 +200,23 @@ const PlayerShow = React.createClass({
 
     return slider_date;
   },
+  fetchShareURL: function () {
+    var currentTags = this.convertActiveTagsToURL(this.state.activeTags);
+    var str_cp = "?q=" + currentTags.join("-");
+    if (this.props.url) {
+      if (this.props.url.indexOf('?') >= 0) {
+        return (this.props.url.split("?")[0] + str_cp)
+      } else {
+        return(this.props.url + str_cp)
+      }
+    }
+    return (null);
+  },
+  copy: function(content) {
+
+  },
   render: function() {
+    var url = this.fetchShareURL();
     var slider = this.buildTimeSlider();
     var tags = this.buildTags();
     var reset = (this.state.activeTags.length) ? (<div className = "padding"><Tag key = {Math.random()} disabled = {false} title = {'RESET'} active = {true} changeFilter = {this.tagListener}/></div>) : null
@@ -206,23 +224,21 @@ const PlayerShow = React.createClass({
                          index = {0} 
                          key = {Math.random()} 
                          name = {this.props.name} 
-                         tagsToPush = {this.convertActiveTagsToURL(this.state.activeTags)} 
-                         totalUrl = {this.props.url}
-                         wait={1000}/>);
+                         wait={1000}
+                         />);
     return (
       <div style = {{paddingTop: 50}}>
-        <div className = "center">
-          <h2 className = "header spacing_none">{this.props.name}</h2>
-          <h4 className="description">{this.props.position + " for the " + this.props.team}</h4>
+        <div>
+          <div className="inline">
+            <h2 className = "header spacing_none">{this.props.name}</h2>
+            <h4 className="description">{this.props.position + " for the " + this.props.team}</h4>
+          </div>
+          <EvilIcon name={"ei-link"} class={"ei-link"} className = "social-icon inline shot-type" funcClick = {this.copy.bind(null, url)}/>
         </div>
         <div>
-          <div className = "padding">
-            { slider }
-          </div>
-          <div className = "padding">
-            {stream}
-          </div>
-          <h4>Filter by shot type</h4>
+          {stream}
+          <h4 className="inline">Filter by shot</h4>
+          <div className="inline" style={{width: "500px", verticalAlign: "middle", marginLeft: "20px"}}>{ slider }</div>
           { reset }
           <div className = "parent padding">
             {tags}

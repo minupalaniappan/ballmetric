@@ -183,17 +183,6 @@ h4 {
 }
 
 .loop-counter {
-	color: white;
-	&:hover {
-		cursor: pointer;
-	}
-	.count {
-		vertical-align: top;
-		background-color: $green;
-		font-family: "Walsheim Medium";
-		padding: 10px;
-		border-radius: 3px;
-	}
 }
 
 .formPosition {
@@ -227,6 +216,8 @@ h4 {
 .overlay {
 	width: 700px;
 	line-height: 400px; 
+	margin-top: 10px;
+	margin-bottom: 10px;
 	background-color: black; 
 	p {
 		text-align: center; 
@@ -236,4 +227,20 @@ h4 {
 
 video {
 	max-width: 700px;
+}
+
+.social-icon {
+	color: $mid-gray;
+	width: 40px; 
+	height: 40px;
+}
+
+.shot-type {
+    vertical-align: middle;
+    float: right;
+    margin-top: 8px;
+}
+
+.mwidth300 {
+	width: 300px;
 }

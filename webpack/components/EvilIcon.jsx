@@ -1,14 +1,25 @@
 import React, { PropTypes } from 'react';
 
+
 const EvilIcon = React.createClass({
     displayName: "Icon",
 
     propTypes: {
-        size: React.PropTypes.string.isRequired,
         name: React.PropTypes.string.isRequired,
         className: React.PropTypes.string,
+        funcClick: React.PropTypes.func,
     },
-    
+    getInitialState: function () {
+        return ({
+            hover: false
+        })
+    }, 
+    hoverFunc: function () {
+        var initHover = this.state.hover;
+        this.setState({
+            hover: !initHover
+        });
+    },
     render: function() {
         var size    = this.props.size ? " icon--" + this.props.size : "";
         var className = this.props.className ? " " + this.props.className : "";
@@ -21,7 +32,7 @@ const EvilIcon = React.createClass({
             </svg>
         );
         return  (
-            <div className={klass}>
+            <div className={klass} onClick={this.props.funcClick} onMouseEnter={this.hoverFunc}>
             {this.wrapSpinner(Icon, klass)}
             </div>
         );
