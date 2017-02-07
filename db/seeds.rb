@@ -6,5 +6,4 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 seeds = Dir[File.join(Rails.root, 'db', 'seeds', '*.rb')]
-seeds.delete_at(2)
-seeds.sort.each { |seed| load seed }
+seeds.sort.each { |seed| puts seed }
