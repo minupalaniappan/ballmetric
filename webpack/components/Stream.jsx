@@ -23,7 +23,6 @@ const Stream = React.createClass({
     }
   },
   componentWillUnmount: function () {
-    this.destroyVideo();
   },
   componentWillMount : function () {
     var that = this;
