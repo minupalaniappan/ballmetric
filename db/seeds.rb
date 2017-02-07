@@ -7,4 +7,4 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 seeds = Dir[File.join(Rails.root, 'db', 'seeds', '*.rb')]
 seeds.delete_at(2)
-load seeds
+seeds.sort.each { |seed| load seed }
