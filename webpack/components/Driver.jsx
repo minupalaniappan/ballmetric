@@ -12,7 +12,6 @@ var driverFunction = function (page) {
 				title: "Ballmetric", 
 				players: window.object.players
 			}
-			console.log(PlayerList);
 			ReactDOM.render(<PlayerList {...PlayerListProps} />, document.getElementById('playerlist'));
 			break; 
 		case "player_show_data": 
@@ -36,6 +35,9 @@ var driverFunction = function (page) {
 var DriverClass = {
 	execute: () => {
 		driverFunction(document.getElementsByClassName("none")[0].id) 
+	}, 
+	unload: () => {
+	
 	}
 }
 

@@ -14,6 +14,17 @@ const Stream = React.createClass({
       hidden: true
     })
   },
+  destroyVideo: function () {
+    var stream = document.getElementById('stream_frame');
+    if (stream) {
+      stream.pause();
+      stream.src =""; // empty source
+      stream.load();
+    }
+  },
+  componentWillUnmount: function () {
+    this.destroyVideo();
+  },
   componentWillMount : function () {
     var that = this;
     setTimeout(function() {
@@ -55,7 +66,6 @@ const Stream = React.createClass({
       event.target.pause();
   },
   fullscreen: function (event) {
-    console.log(event.target);
     event.target.webkitRequestFullScreen();
   },
   render: function() {
@@ -64,7 +74,7 @@ const Stream = React.createClass({
     var video_block;
     video_block = (!this.state.hidden)  ? (<div>
                               <div className = "center padding" id = "videocontroller">
-                                <video id = "stream_frame" className="video" onClick={this.control} onDoubleClick = {this.fullscreen} onEnded={this.videoEnded} autoPlay={true} controls = {false} src={stream} muted={true} allowFullScreen={true}/>
+                                <video id = "stream_frame" className="video" onClick={this.control} onDoubleClick = {this.fullscreen} onEnded={this.videoEnded} autoPlay={(this.state.index === 0) ? false : true} controls = {false} src={stream} muted={true} allowFullScreen={true}/>
                               </div>
                             </div>)
                             :

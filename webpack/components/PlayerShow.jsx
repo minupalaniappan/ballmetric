@@ -28,13 +28,7 @@ const PlayerShow = React.createClass({
       activeTags: [],
       availableTags: this.getUniqArr(this.props.assortedTags)
     })
-  },
-  destroyVideo: function () {
-    var stream = document.getElementById('stream_frame');
-    stream.pause();
-    stream.src =""; // empty source
-    stream.load();
-  },
+  }, 
   fetchPlaysUniqueTags: function () {
     var playstags = _.uniq(_.flatten(_.pluck(this.state['plays'], 'tags')));
     return (playstags);
