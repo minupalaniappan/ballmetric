@@ -62,7 +62,7 @@ const PlayerShow = React.createClass({
   },
   tagListener: function (event) {
     var tag_value = event.target.getAttribute('value');
-    if (tag_value === 'RESET') {
+    if (tag_value === 'Reset') {
       this.setState({
           activeTags: [],
           availableTags: this.getUniqArr(this.props.assortedTags)
@@ -219,7 +219,7 @@ const PlayerShow = React.createClass({
     var url = this.fetchShareURL();
     var slider = this.buildTimeSlider();
     var tags = this.buildTags();
-    var reset = (this.state.activeTags.length) ? (<div className = "padding"><Tag key = {Math.random()} disabled = {false} title = {'RESET'} active = {true} changeFilter = {this.tagListener}/></div>) : null
+    var reset = (this.state.activeTags.length) ? (<div className = "padding"><Tag key = {Math.random()} disabled = {false} title = {'Reset'} active = {true} changeFilter = {this.tagListener}/></div>) : null
     var stream = (<Stream streamables = {this.state.plays}
                          index = {0} 
                          key = {Math.random()} 
@@ -237,10 +237,10 @@ const PlayerShow = React.createClass({
         </div>
         <div>
           {stream}
-          <h4 className="inline">Filter by shot</h4>
-          <div className="inline" style={{width: "500px", verticalAlign: "middle", marginLeft: "20px"}}>{ slider }</div>
+          <h4 className="inline">Filter by date</h4>
+          <div className="inline padding" style={{width: "500px", verticalAlign: "middle", marginLeft: "20px"}}>{ slider }</div>
           { reset }
-          <div className = "parent padding">
+          <div className = "parent">
             {tags}
           </div>
         </div>

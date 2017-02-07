@@ -170,12 +170,15 @@ h4 {
 	color: $dark-gray;
 }
 
-.available {
-	* { color: $mid-gray;}
+.active, .available, .reset {
 	.tag-title {
 		font-family: "Walsheim Regular";
-    	font-size: 0.8em;
+		font-size: 0.8em;
 	}
+}
+
+.available {
+	* { color: $mid-gray;}
 }
 
 .center {
