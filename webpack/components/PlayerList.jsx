@@ -16,8 +16,8 @@ var PlayerList = React.createClass({
       if (player) {
         return (
           <div key = {Math.random()} className = "padding">
-            <a href={player.url}><h2>{player.firstname} {player.lastname}</h2></a>
-            <h4 className="description">{player.position} for the {player.team}</h4>
+            <a href={player.url}><h2>{player.firstName} {player.lastName}</h2></a>
+            <h4 className="description">{player.pos}</h4>
           </div>
         )
       }
@@ -32,8 +32,7 @@ var PlayerList = React.createClass({
       value: text, 
     }, () => {
       var players_filtered = all_players.map((player) => {
-        var search_str = player.firstname + " " + player.lastname + " " 
-        + player.team + " " + player.position;
+        var search_str = player.firstName + " " + player.lastName + " " + player.pos;
         if (search_str.search(new RegExp(text, "i")) != -1) {
           return player;
         }

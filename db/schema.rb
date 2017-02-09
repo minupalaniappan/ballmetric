@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170124183931) do
+ActiveRecord::Schema.define(version: 20170209231303) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,34 +28,42 @@ ActiveRecord::Schema.define(version: 20170124183931) do
   end
 
   create_table "players", force: :cascade do |t|
-    t.string   "firstname"
-    t.string   "lastname"
-    t.string   "alphabet"
+    t.string   "firstName"
+    t.string   "lastName"
+    t.string   "orderChar"
     t.string   "playertag"
-    t.string   "team"
-    t.string   "position"
-    t.string   "playerlowcase"
+    t.string   "pos"
+    t.string   "urlName"
     t.string   "slug"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.integer  "roster_id"
+    t.string   "posExpanded"
+    t.integer  "heightFeet"
+    t.integer  "heightInches"
+    t.integer  "weightPounds"
+    t.integer  "personId"
+    t.boolean  "isAllStar"
+    t.string   "displayName"
+    t.index ["roster_id"], name: "index_players_on_roster_id", using: :btree
   end
 
   create_table "plays", force: :cascade do |t|
-    t.string   "game_id"
     t.integer  "event_id"
-    t.string   "away_team"
-    t.string   "home_team"
     t.string   "description"
     t.string   "mp4"
-    t.string   "tags"
-    t.integer  "month"
-    t.integer  "day"
-    t.integer  "year"
-    t.integer  "player_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.index ["player_id"], name: "index_plays_on_player_id", using: :btree
+    t.integer  "game_id"
+    t.json     "playermap"
+    t.index ["event_id", "mp4"], name: "index_plays_on_event_id_and_mp4", unique: true, using: :btree
+    t.index ["game_id"], name: "index_plays_on_game_id", using: :btree
   end
 
-  add_foreign_key "plays", "players"
+  create_table "rosters", force: :cascade do |t|
+    t.string "name"
+  end
+
+  add_foreign_key "players", "rosters"
+  add_foreign_key "plays", "games"
 end
