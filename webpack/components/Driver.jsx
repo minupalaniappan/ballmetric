@@ -1,6 +1,5 @@
 import ReactDOM from 'react-dom';
 import React, { PropTypes } from 'react';
-
 const PlayerList = require('./PlayerList.jsx').default
 const PlayerShow = require('./PlayerShow.jsx').default
 
@@ -15,6 +14,13 @@ var driverFunction = function (page) {
 			ReactDOM.render(<PlayerList {...PlayerListProps} />, document.getElementById('playerlist'));
 			break; 
 		case "player_show_data": 
+			var PlayerShowProps = {
+				player: window.object.player,
+				games: window.object.games, 
+				plays: window.object.plays,
+				prependedArguments: window.object.urlArgs
+			}
+			ReactDOM.render(<PlayerShow {...PlayerShowProps} />, document.getElementById('playershow'));
 			break;
 		default:
 			break;

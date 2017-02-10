@@ -9,7 +9,9 @@
   </head>
 
   <body>
-    <%= yield %>
+    <div class = "content">
+     <%= yield %>
+    </div>
   </body>
   <footer>
     <%= javascript_include_tag *webpack_asset_paths("application") %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170209235007) do
+ActiveRecord::Schema.define(version: 20170210005508) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(version: 20170209235007) do
     t.boolean  "isAllStar"
     t.string   "displayName"
     t.string   "teams",        default: [],              array: true
+    t.string   "citys",        default: [],              array: true
     t.index ["roster_id"], name: "index_players_on_roster_id", using: :btree
   end
 

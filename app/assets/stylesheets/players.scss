@@ -66,6 +66,17 @@ html, body {
 	height: 100%;
 }
 
+/* slider */ 
+
+.rc-slider-mark-text {
+	width: 18%;
+    margin-left: -9%;
+}
+
+.content {
+	padding-top: 30px;
+}
+
 * {
 	text-decoration: none;
 	margin: 0px;
@@ -109,13 +120,6 @@ h4 {
 	padding: 0px 10px;
 }
 
-.margin {
-	margin: 10px 0px;
-}
-
-.margin-side {
-	margin: 0px 10px;
-}
 
 .form-search {
 	border: none;
@@ -149,23 +153,6 @@ h4 {
 	}
 }
 
-.tag {
-	&:hover {
-		cursor: pointer;
-	}
-	width: 19%;
-    /* height: 50px; */
-    /* line-height: 50px; */
-    line-height: 35px;
-    text-align: center;
-    border: 1px solid #D1D1D1;
-    border-radius: 2px;
-    margin-right: 5px;
-    margin-bottom: 5px;
-    background-color: $ultra-light-gray;
-}
-
-
 .active {
 	color: $dark-gray;
 }
@@ -177,16 +164,6 @@ h4 {
 	}
 }
 
-.available {
-	* { color: $mid-gray;}
-}
-
-.center {
-	text-align: center;
-}
-
-.loop-counter {
-}
 
 .formPosition {
 	padding: 10px;
@@ -237,4 +214,11 @@ video {
 	color: $mid-gray;
 	width: 40px; 
 	height: 40px;
+}
+
+.tier-slider {
+	margin: 15px 0px;
+	padding: 15px 25px 30px 25px; 
+	border-radius: 3px;
+	border: 1px solid $ultra-light-gray;
 }

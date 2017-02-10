@@ -8,152 +8,32 @@ const Tag = require('./Tag.jsx').default
 const Stream = require('./Stream.jsx').default
 const moment = extendMoment(Moment);
 const EvilIcon = require('./EvilIcon.jsx').default
-
-
+const FetchTagObject = require ('../mapping.js').FetchTagObject
 
 const PlayerShow = React.createClass({
   propTypes: {
-    events: React.PropTypes.array,
-    name: React.PropTypes.string,
-    position: React.PropTypes.string,
-    team: React.PropTypes.string,
-    assortedTags: React.PropTypes.array,
-    assortedTagsInDictionary: React.PropTypes.object,
-    prependedArguments: React.PropTypes.string,
-    url: React.PropTypes.string
+    player: React.PropTypes.object,
+    games: React.PropTypes.array,
+    plays: React.PropTypes.array,
+    prependedArguments: React.PropTypes.string
   },
   getInitialState: function () {
     return ({
-      plays: this.props['events'],
-      activeTags: [],
-      availableTags: this.getUniqArr(this.props.assortedTags)
+      tags: this.fetchTags([0, this.props.games.length]), 
+      mp4s: this.fetchMP4s(null, [0, this.props.games.length])
     })
-  }, 
-  fetchPlaysUniqueTags: function () {
-    var playstags = _.uniq(_.flatten(_.pluck(this.state['plays'], 'tags')));
-    return (playstags);
   },
-  getUniqArr: function (arr) {
-    return (_.uniq(_.pluck(arr, 'value')));
+  headerBlock: function () {
+    var player = this.props.player;
+    return (
+      <div>
+        <h1>{`${player.firstName} ${player.lastName}`}</h1>
+        <h4>{`${player.heightFeet}'${player.heightInches} ${player.posExpanded} for ${player.citys[0]}`}</h4>
+      </div>
+    );
   },
-  fetchPlays: function () {
-    this.setState({
-      plays: this.filterPlays(this.state.activeTags)
-    });
-  },
-  filterPlays: function (args) {
-    if (args.length) {
-      var returned_events = this.state.plays.map((play_) => {
-        if (_.intersection(play_['tags'], args).length === args.length) {
-          return (play_);
-        }
-      });
-      returned_events = returned_events.filter(Boolean)
-      return (returned_events);
-    } else {
-      return (this.props['events']);
-    }
-  },
-  tagListener: function (event) {
-    var tag_value = event.target.getAttribute('value');
-    if (tag_value === 'Reset') {
-      this.setState({
-          activeTags: [],
-          availableTags: this.getUniqArr(this.props.assortedTags)
-      }, () => {
-        this.fetchPlays();
-      });
-    } else {
-      var new_tag_set = this.state.activeTags;
-      new_tag_set.push(tag_value);
-      this.setState({
-          activeTags: new_tag_set,
-          availableTags: this.fetchAvailableTags(new_tag_set)
-      }, () => {
-        this.fetchPlays();
-      });
-    }
-  },
-  fetchAvailableTags: function (args) {
-    var distinct_tags = _.filter(this.props.assortedTags, (elem) =>{
-      return (!args.includes(elem['value']))
-    });
-
-    distinct_tags = this.getUniqArr(distinct_tags);
-    return (distinct_tags);
-  },
-  buildTags: function () {
-    var raw_tags = this.props.assortedTagsInDictionary;
-    var total_props_tags = this.getUniqArr(this.props.assortedTags);
-    var tags = total_props_tags.map((title) => {
-      var flag = (this.state.activeTags.length && !this.state.availableTags.includes(title)) ? true : false
-      var tagEnabled = this.fetchPlaysUniqueTags();//.includes(tag_['value']);
-      var disable_flag = (_.indexOf(tagEnabled, title) == -1) ? true : false
-      return (
-        <Tag key = {Math.random()} disabled = {disable_flag} title = {title} active = {flag} changeFilter = {this.tagListener}/>
-      )
-    });
-    tags = tags.filter((tag) => {
-      return (!tag.props.disabled)
-    });
-    return (tags);
-  },
-  componentDidMount: function () {
-    if (this.props.prependedArguments) {
-      var mappedElems = this.props.prependedArguments.split("-");
-      var args = mappedElems.map((elem) => {
-        return (this.props.assortedTagsInDictionary[elem]);
-      });
-      var avail_tags = this.fetchAvailableTags(args);
-      var obj = {
-        activeTags: args,
-        availableTags: avail_tags,
-      }
-
-      this.setState(obj,()=> {
-        this.fetchPlays()
-      });
-    } else {
-      this.fetchPlays();
-    }
-  },
-  back: function () {
-    this.destroyVideo();
-    window.location.href = "/players/";
-  },
-  convertActiveTagsToURL: function () {
-    var dict = this.props.assortedTags;
-    var notation = this.state.activeTags.map((element) => {
-      var emptyVal;
-      dict.forEach((valToCompare) => {
-        if (!emptyVal && element === valToCompare['value']) {
-          emptyVal = valToCompare['type']
-        }
-      });
-      return emptyVal;
-    });
-
-    return notation;
-  },
-  dateListener: function (event, elems) {
-    var start_obj = event[elems[0]];
-    var end_obj = event[elems[1]];
-    var startDate = new Date(start_obj.year, start_obj.month, start_obj.day);
-    var endDate = new Date(end_obj.year, end_obj.month, end_obj.day);
-    var range = moment.range(startDate, endDate);
-    var events = this.props.events.filter((play) => {
-      var date = new Date (play.year, play.month, play.day);
-      var date_moment = moment(date);
-      return (date_moment.within(range))
-    });
-    this.setState({
-      plays: events,
-      activeTags: [],
-      availableTags: this.getUniqArr(this.props.assortedTags)
-    });
-  },
-  buildTimeSlider: function () {
-    var dates = _.map(this.props.events, (event)=> {
+  generateDatesOfGames: function () {
+    var dates = _.map(this.props.games, (event)=> {
       return {
         day: event.day,
         month: event.month,
@@ -162,21 +42,71 @@ const PlayerShow = React.createClass({
         date_object: new Date(event.year, event.month-1, event.day).toDateString()
       }
     });
-    var uniq_dates = _.uniq(dates, function(date){
-        return date.id;
+
+    return (dates);
+  },
+  generateMarks: function (dates) {
+    var marks = {}; 
+    dates.forEach((date, index) => {
+      if (date['day'] === 1) {
+        marks[index] = date['date_object']
+      }
     });
+    return marks;
+  }, 
+  fetchTags: function (elems) {
+    var game_capture = this.props.games.slice(elems[0], elems[1]);
+    var plays = this.getPlays(game_capture);
+    var tagLays = [];
+    plays.forEach((play) => {
+      if (play['playermap']) {
+        play['playermap'].forEach((player)=> {
+          if (player['id'] === this.props.player['id']) {
+            tagLays.push(FetchTagObject(player['tags'])); 
+          }
+        });
+      }
+    });
+    return (tagLays);
+  }, 
+  fetchMP4s: function (dummy, elems) {
+    var game_capture = this.props.games.slice(elems[0], elems[1]);
+    var plays = this.getPlays(game_capture);
+    plays = plays.filter((play) => {
+      return (_.contains(_.pluck(play['playermap'], 'id'), this.props.player['id']))
+    });
+    return (_.pluck(plays, 'mp4'));
+  },
+  dateListener: function (event, elems) {
+    this.setState({
+      mp4s: this.fetchMP4s(null, elems),
+      tags: this.fetchTags(elems)
+    })
+  }, 
+  getPlays: function (games) {
+    var playArr = [];
+    var gameIds = _.pluck(games, 'id'); 
+    var plays = this.props.plays.filter((play) => {
+      return (_.contains(gameIds, play['game_id']));
+    }); 
+    return (plays);
+  },
+  generateSlider: function () {
+    var dates = _.uniq(this.generateDatesOfGames())
+    var marks = this.generateMarks(dates)
     var slider_props = {
         allowCross: false,
         pushable: false,
         min: 0,
-        max: uniq_dates.length-1,
-        defaultValue: [0,uniq_dates.length],
-        onChange: this.dateListener.bind(null, uniq_dates),
+        max: dates.length-1,
+        defaultValue: [0,dates.length],
+        onChange: this.dateListener.bind(null, dates),
+        marks: marks, 
         handle: (props) => {
           const { value, dragging, index } = props;
           return (
             <Tooltip
-              overlay={uniq_dates[value]['date_object']}
+              overlay={dates[value]['date_object']}
               visible={dragging}
               placement="top"
               key={index}
@@ -186,58 +116,26 @@ const PlayerShow = React.createClass({
           );
       }
     }
-    var slider_date = (
-      <div>
+
+    return (
+      <div className = "tier-slider">
         <Range {...slider_props}/>
       </div>
-    );
-
-    return slider_date;
-  },
-  fetchShareURL: function () {
-    var currentTags = this.convertActiveTagsToURL(this.state.activeTags);
-    var str_cp = "?q=" + currentTags.join("-");
-    if (this.props.url) {
-      if (this.props.url.indexOf('?') >= 0) {
-        return (this.props.url.split("?")[0] + str_cp)
-      } else {
-        return(this.props.url + str_cp)
-      }
-    }
-    return (null);
-  },
-  copy: function(content) {
-
-  },
-  render: function() {
-    var url = this.fetchShareURL();
-    var slider = this.buildTimeSlider();
-    var tags = this.buildTags();
-    var reset = (this.state.activeTags.length) ? (<div className = "padding"><Tag key = {Math.random()} disabled = {false} title = {'Reset'} active = {true} changeFilter = {this.tagListener}/></div>) : null
-    var stream = (<Stream streamables = {this.state.plays}
-                         index = {0} 
-                         key = {Math.random()} 
-                         name = {this.props.name} 
-                         wait={1000}
-                         />);
+    )
+  }, 
+  bodyBlock: function () {
+    var slider = this.generateSlider();
     return (
-      <div style = {{paddingTop: 50}}>
-        <div>
-          <div className="inline">
-            <h2 className = "header spacing_none">{this.props.name}</h2>
-            <h4 className="description">{this.props.position + " for the " + this.props.team}</h4>
-          </div>
-          <EvilIcon name={"ei-link"} class={"ei-link"} className = "social-icon inline shot-type" funcClick = {this.copy.bind(null, url)}/>
-        </div>
-        <div>
-          {stream}
-          <h4 className="inline">Filter by date</h4>
-          <div className="inline padding" style={{width: "500px", verticalAlign: "middle", marginLeft: "20px"}}>{ slider }</div>
-          { reset }
-          <div className = "parent">
-            {tags}
-          </div>
-        </div>
+      <div>{ slider }</div>
+    )
+  },  
+  render: function() {
+    var header = this.headerBlock();
+    var body = this.bodyBlock(); 
+    return (
+      <div>
+        { header }
+        { body }
       </div>
     );
   }

@@ -27,9 +27,12 @@ class PlayerJob < ActiveJob::Base
 		data = fetchPlayers
 		data.each {
 			|player|
-			if player['playerId']
-				ply = Player.find_by(personId: player['personId'].to_i)[0]
-				ply.update(:teams => [player['teamData']['tricode']])
+			puts player
+			if player['personId']
+				ply = Player.find_by(personId: player['personId'].to_i)
+				if ply
+					ply.update(:teams => [player['teamData']['tricode']])
+				end
 			end
 		}
 	end
