@@ -79,7 +79,6 @@ const PlayerShow = React.createClass({
     return (_.pluck(plays, 'mp4'));
   },
   dateListener: function (event, elems) {
-    console.log(this.fetchMP4s(null, elems));
     this.setState({
       mp4s: this.fetchMP4s(null, elems),
       tags: this.fetchTags(elems)
@@ -162,8 +161,14 @@ const PlayerShow = React.createClass({
         </div>
       )
   }, 
-  tagStream: function () {
-
+  type: function () {
+    var type = _.uniq(_.pluck(this.state.tags, 'type'));
+  }, 
+  form: function () {
+    var form = _.uniq(_.pluck(this.state.tags, 'form'));
+  }, 
+  style: function () {
+    var style = _.uniq(_.pluck(this.state.tags, 'style'));
   }, 
   bodyBlock: function () {
     var slider = this.generateSlider();
