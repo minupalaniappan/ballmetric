@@ -222,3 +222,15 @@ video {
 	border-radius: 3px;
 	border: 1px solid $ultra-light-gray;
 }
+
+.videoBlack {
+	background-color: black; 
+	width: 700px; 
+	height: 393px; 
+	p {
+		text-align: center; 
+		color: white; 
+		font-family: "Walsheim Light";
+		line-height: 393px;
+	}
+}

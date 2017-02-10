@@ -19,6 +19,7 @@ const PlayerShow = React.createClass({
   },
   getInitialState: function () {
     return ({
+      index: 0,
       tags: this.fetchTags([0, this.props.games.length]), 
       mp4s: this.fetchMP4s(null, [0, this.props.games.length])
     })
@@ -78,10 +79,11 @@ const PlayerShow = React.createClass({
     return (_.pluck(plays, 'mp4'));
   },
   dateListener: function (event, elems) {
+    console.log(this.fetchMP4s(null, elems));
     this.setState({
       mp4s: this.fetchMP4s(null, elems),
       tags: this.fetchTags(elems)
-    })
+    });
   }, 
   getPlays: function (games) {
     var playArr = [];
@@ -123,10 +125,56 @@ const PlayerShow = React.createClass({
       </div>
     )
   }, 
+  control: function (event) {
+    if (event.target.paused)
+      event.target.play();
+    else
+      event.target.pause();
+  },
+  videoEnded: function () {
+    var index; 
+    if (this.state.index === this.state.mp4s.length-1)
+      index = 0;
+    else
+      index = this.state.index + 1; 
+
+    this.setState({
+      index: index
+    });
+  }, 
+  videoStream: function () {
+    var mp4s = this.state.mp4s; 
+    if (mp4s.length)
+      return (
+        <video id = "stream_frame" 
+               className="video" 
+               onClick={this.control} 
+               onEnded={this.videoEnded} 
+               autoPlay={true} 
+               controls = {false} 
+               src={mp4s[this.state.index]} 
+               muted={true}/>
+      )
+    else
+      return (
+        <div className="videoBlack">
+          <p>No videos for this segment</p>
+        </div>
+      )
+  }, 
+  tagStream: function () {
+
+  }, 
   bodyBlock: function () {
     var slider = this.generateSlider();
+    var videoStream = this.videoStream();
+    var tagStream = this.tagStream();
     return (
-      <div>{ slider }</div>
+      <div style = {{margin: "10px 0px"}}>
+        { videoStream }
+        { slider }
+        { tagStream }
+      </div>
     )
   },  
   render: function() {
