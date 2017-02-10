@@ -1,5 +1,5 @@
 namespace :players do
 	task :fetch => :environment do
-		PlayerJob.driver
+		PlayerJob.addTeamToPlayer
 	end
 end

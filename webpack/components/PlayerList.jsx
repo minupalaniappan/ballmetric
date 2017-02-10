@@ -16,8 +16,7 @@ var PlayerList = React.createClass({
       if (player) {
         return (
           <div key = {Math.random()} className = "padding">
-            <a href={player.url}><h2>{player.firstName} {player.lastName}</h2></a>
-            <h4 className="description">{player.pos}</h4>
+            <a href={player.url}><h2 className = "inline">{player.firstName} {player.lastName}</h2><h4 className="description inline" style = {{marginLeft: "5px"}}>{player.pos}</h4></a>
           </div>
         )
       }
@@ -51,7 +50,7 @@ var PlayerList = React.createClass({
     return (
       <div className="playerListWrapper">
         <h1 className="center">{this.props.title}</h1>
-        <h4 className="center light">Bringing shot search to the National Basketball Association</h4>
+        <h4 className="center light">Discover new plays from the NBA</h4>
         <div className="padding">
           <input className="form-search" type="text" name="filterplayer" value={this.state.value} onChange={this.handleChange} placeholder={"Search a player"}/>
         </div>

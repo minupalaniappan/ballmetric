@@ -17,6 +17,11 @@ class PlayersController < ApplicationController
 	end
 
 	def show
+		ActiveRecord::Base.include_root_in_json = true
+		@urlArgs = params['q'].to_s
+		player = Player.friendly.find(params[:id])
+		_games = Game.where('home_team=? OR away_team=?', player['teams'][0], player['teams'][0])
+		puts _games
 	end
 
 end

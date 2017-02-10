@@ -23,6 +23,17 @@ class PlayerJob < ActiveJob::Base
 		team.players.create!(player_obj)
 	end
 
+	def self.addTeamToPlayer
+		data = fetchPlayers
+		data.each {
+			|player|
+			if player['playerId']
+				ply = Player.find_by(personId: player['personId'].to_i)[0]
+				ply.update(:teams => [player['teamData']['tricode']])
+			end
+		}
+	end
+
 	def self.driver 
 		content = fetchPlayers
 		content.each {

@@ -7,11 +7,10 @@ $light-gray: #B5B5B5;
 $mid-gray: #4a4a4a;
 $dark-gray: #999;
 $dark-blue: #003569;
-$green: #81DE62;
+$green: #12D18B;
 
 @mixin vertical-align($position: relative) {
   position: $position;
-  top: 50%;
 }
 
 @font-face {
@@ -74,12 +73,13 @@ html, body {
 }
 
 a {
-	color: $dark-blue;
+	color: $green;
 }
 
 h1 {
 	font-family: "Walsheim Medium";
-	font-size: 2.3em;
+	font-size: 3em;
+	color: $green;
 }
 
 h2 {
@@ -95,7 +95,6 @@ h4 {
 
 .vertical-align-div {
 	@include vertical-align();
-	margin-top: -100px;
 }
 
 .right {
@@ -123,10 +122,11 @@ h4 {
     border-radius: 2px;
     border: 1px solid $light-gray;
     outline: none;
-    font-size: 1em;
-    padding: 5px 8px;
+    font-size: 1.2em;
+    padding: 10px;
     box-sizing:border-box;
     width: 100%;
+    margin: 15px 0px;
 
 }
 
@@ -209,6 +209,7 @@ h4 {
 .playerListWrapper {
 	max-width: 500px;
 	margin: 0 auto;
+	padding: 30px 0px;
 }
 
 .player_component {
@@ -236,14 +237,4 @@ video {
 	color: $mid-gray;
 	width: 40px; 
 	height: 40px;
-}
-
-.shot-type {
-    vertical-align: middle;
-    float: right;
-    margin-top: 8px;
-}
-
-.mwidth300 {
-	width: 300px;
 }
