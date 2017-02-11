@@ -161,15 +161,10 @@ const PlayerShow = React.createClass({
         </div>
       )
   }, 
-  type: function () {
-    var type = _.uniq(_.pluck(this.state.tags, 'type'));
-  }, 
-  form: function () {
-    var form = _.uniq(_.pluck(this.state.tags, 'form'));
-  }, 
-  style: function () {
-    var style = _.uniq(_.pluck(this.state.tags, 'style'));
-  }, 
+  tagStream: function () {
+    console.log(this.state.tags);
+    return [];
+  },
   bodyBlock: function () {
     var slider = this.generateSlider();
     var videoStream = this.videoStream();

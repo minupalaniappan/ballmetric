@@ -2,163 +2,87 @@ import _ from 'underscore';
 
 export var FetchTagObject = function (values) {
 	/* handle shot */ 
-	var objToReturn;
+	var tag; 
+	var made = null;
 	switch (true) {
-		case (_.contains(values, 'Layup') || _.contains(values, 'Dunk')):
-			objToReturn = classifyAthletic(values)
+		case (_.intersection(['Jump', 'Shot'], values).length === 2): 
+			switch (true) {
+				case _.contains('3PT'):
+					tag = "3PT Jumpshot";
+					break;
+				case _.contains(values, 'Pull-Up'):
+					tag = "Pull-up Jumpshot";
+					break;
+				case _.contains(values, 'Back'):
+					tag = "Stepback Jumpshot";
+					break;
+				case _.contains(values, 'Turnaround'):
+					tag = "Turnaround Jumpshot";
+					break;
+				default:
+					break;
+			}
 			break;
-		case (_.contains(values, 'Shot') || _.contains(values, 'Jump')):
-			objToReturn = classifyShot(values)
+		case _.contains(values, 'Hook'):
+			tag = "Hook shot";
 			break;
-		case _.contains(values, 'REB') || _.contains(values, 'REBOUND') || _.contains(values, 'Rebound'):
-			objToReturn = classifyRebound(values)
+		case _.contains(values, 'Fadeaway'):
+			tag = "Fadeaway Jumpshot";
 			break;
-		case _.contains(values, 'AST') || _.contains(values, 'ASSIST') || _.contains(values, 'Assist'):
-			objToReturn = classifyAssist(values)
+		case _.contains(values, 'Floating'):
+			tag = "Floater"
 			break;
-		case _.contains(values, 'TO') || _.contains(values, 'TURNOVER') || _.contains(values, 'Turnover'):
-			objToReturn = classifyTurnover(values)
+		case _.contains(values, 'Shot') ||  _.contains(values, 'Jump'):
+			tag = "Shot"
 			break;
-		case _.contains(values, 'BLO') || _.contains(values, 'BLOCK') || _.contains(values, 'Block'):
-			objToReturn = classifyBlock(values)
+		case _.contains(values, 'REBOUND') || _.contains(values, 'REB'):
+			tag = "Rebound"
 			break;
-		case _.contains(values, 'STL') || _.contains(values, 'STEAL') || _.contains(values, 'Steal'):
-			objToReturn = classifySteal(values)
+		case _.contains(values, 'STEAL') || _.contains(values, 'STL'):
+			tag = "Steal";
 			break;
-		case _.contains(values, 'FOUL') || _.contains(values, 'P.FOUL'):
-			objToReturn = classifyFoul(values)
+		case (_.contains(values, 'TURNOVER') || 
+			  _.contains(values, 'TO') ||
+			  _.contains(values, 'Traveling') || 
+			  _.contains(values, 'Bad')):
+			tag = "Turnover";
 			break;
-		case _.contains(values, 'SUB') || _.contains(values, 'SUBSITUTION') || _.contains(values, 'Steal'):
-			objToReturn = classifySubstitution(values)
+		case _.contains(values, 'DUNK') || _.contains(values, 'Dunk'):
+			tag = "Dunk"
 			break;
-		case _.contains(values, 'Tip'):
-			objToReturn = classifyTip(values)
+		case _.contains(values, 'ASSIST') || _.contains(values, 'AST'):
+			tag = "Assist";
 			break;
-		default: 
-			return null; 
-	}
-
-	return (objToReturn);	
-}
-
-var classifyFoul = function (values) {
-	var category = {
-		type: 'posession', 
-		form: 'foul', 
-		style: ""
-	} 
-	return (category);
-}
-
-var classifyAthletic = function () {
-	var category = {
-		type: 'athletic', 
-		form: "", 
-		style: ""
-	} 
-
-	return category;
-}
-
-var classifySubstitution = function (values) {
-	var category = {
-		type: 'posession', 
-		form: 'sub', 
-		style: ""
-	} 
-	return (category);
-}
-
-var classifySteal = function (values) {
-	var category = {
-		type: 'defense', 
-		form: 'steal', 
-		style: ""
-	} 
-	return (category);
-}
-
-var classifyRebound = function (values) {
-	var category = {
-		type: 'possesion', 
-		form: 'rebound', 
-		style: ""
-	} 
-	return (category);
-}
-
-var classifyAssist = function (values) {
-	var category = {
-		type: 'offense', 
-		form: 'dime', 
-		style: ""
-	} 
-	return (category);
-}	
-
-var classifyBlock = function (values) {
-	var category = {
-		type: 'defense', 
-		form: 'block', 
-		style: ""
-	} 
-	return (category);
-}
-
-var classifyTurnover = function (values) {
-	var styles = values.filter((elem) => { 
-		switch (elem) {
-			case "Bad": 
-				return ("Bad Pass Turnover");
-			default: 
-				return ("Unknown Turnover");
-		}
-	})[0];
-	var category = {
-		type: 'possesion', 
-		form: 'error', 
-		style: styles
-	} 
-	return (category);
-}
-
-var classifyShot = function (values) {
-	var distance = values.filter((elem) => { return (elem.length < 3) });
-	var styles = values.filter((elem) => { 
-		switch (elem) {
-			case "Back": 
-				return ("Step back");
-			case "Pull-up":
-				return ("Pullin' up"); 
-			case "Running": 
-				return ("Floater");
-			default: 
-				return ("Fade away");
-		}
-	})[0];
-	var category = {
-		type: 'offense', 
-		form: 'sniper', 
-		distance: parseInt(distance),
-		range: determineDistance(parseInt(distance)), 
-		made: _.contains(values, 'MISS'), 
-		style: styles
-	} 
-
-	return (category);
-}
-
-var determineDistance = function (range) {
-	switch (true) {
-		case (0 < range && range < 5):
-			return ("Interior");
+		case _.contains(values, 'Driving') || _.contains(values, 'Running') || _.contains(values, 'Layup'):
+			tag = "Layup";
 			break;
-		case (range > 4 && range < 25):
-			return ("Mid-range"); 
+		case _.contains(values, 'FT') || _.contains(values, 'Free Throw'):
+			tag = "Free Throw";
+			break;
+		case _.contains(values, 'BLOCK') || _.contains(values, 'BLO'):
+			tag = "Block";
+			break;
+		case _.contains(values, 'P.FOUL') || _.contains(values, 'FOUL'):
+			tag = "Foul"
 			break;
 		default:
-			return ("Long-distance");
 			break;
 	}
+	if (tag === undefined) {
+		tag = "Midrange jumper"
+	}
+	if (_.contains(values, 'MISS')) {
+		made = false;
+	} else if (tag != "Block" && tag != "Steal" && tag != "Assist" && tag != "Turnover" && tag != "Rebound") {
+		made = true;
+	}
+	console.log(values);
+	if (tag === null) {
+		console.log(values);
+	}
+	return ({
+		value: tag,
+		made: made
+	});
 }
 
