@@ -24,9 +24,33 @@ const PlayerShow = React.createClass({
       active: "",
       index: 0,
       tags: [], 
-      plays: []
+      plays: [], 
+      tagSearchValue: ''
     })
   },
+  handleChange: function (event) {
+    var text = event.target.value;
+    var all_tags = this.state.tags;
+    this.setState({
+      tagSearchValue: text, 
+    }, () => {
+      var tags_filtered = all_tags.filter((tag) => {
+        var search_str = tag;
+        if (search_str.search(new RegExp(text, "i")) != -1) {
+          return tag;
+        }
+      });
+
+      if (this.state.tagSearchValue === "") {
+        var tags_filtered = this.fetchTags();
+        console.log(tags_filtered);
+      }
+
+      this.setState({
+        tags: tags_filtered
+      });
+    });
+  }, 
   componentDidMount: function () {
     this.setState({
       start: 0,
@@ -78,7 +102,8 @@ const PlayerShow = React.createClass({
         }
       });
     });
-    return (tagLays);
+    var tags = _.uniq(_.pluck(tagLays, 'value'));
+    return (tags);
   }, 
   fetchMP4s: function (dummy) {
     var game_capture = this.props.games.slice(this.state.start, this.state.end);
@@ -194,8 +219,7 @@ const PlayerShow = React.createClass({
       )
   }, 
   tagStream: function () {
-    var tags = _.uniq(_.pluck(this.state.tags, 'value'));
-    return (this.generateTags(tags));
+    return (this.generateTags(this.state.tags));
   },
   activateFilter: function (event) {
     var tag = event.props.tag;
@@ -229,6 +253,9 @@ const PlayerShow = React.createClass({
       content = (
         <div>
           <h4>Refine search</h4>
+          <div className="padding">
+            <input className="tag-search" type="text" name="filterplayer" value={this.state.tagSearchValue} onChange={this.handleChange} placeholder={"Search a tag"}/>
+          </div>
           { elements }
         </div>
       )
@@ -250,7 +277,7 @@ const PlayerShow = React.createClass({
     var tagStream = this.tagStream();
     return (
       <div style = {{margin: "10px 0px"}}>
-        { videoStream }
+        <div className="bg-back">{(videoStream) ? videoStream : <p>Scrubbing</p>}</div>
         { slider }
         { tagStream }
       </div>
