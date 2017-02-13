@@ -29,14 +29,18 @@ class PlayersController < ApplicationController
 		@urlArgs = params['q'].to_s
 		player = Player.friendly.find(params[:id])
 		_games = Game.where('home_team=? OR away_team=?', player['teams'][0], player['teams'][0])
-		_plays = _games.map {
+		playArr = Array.new
+		_games.each {
 			|game|
-			game.plays
-		}[0]
+			game.plays.each {
+				|play|
+				playArr.push play
+			}
+		}
 		@props = {
 			player: player.attributes,
 			games: mapArr(_games), 
-			plays: mapArr(_plays),
+			plays: mapArr(playArr),
 			prependedArguments: @urlArgs
 		}.to_json
 	end

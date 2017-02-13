@@ -184,7 +184,7 @@ const PlayerShow = React.createClass({
                autoPlay={(this.state.index !== 0)} 
                controls = {false} 
                src={this.state.plays[this.state.index]['mp4']} 
-               muted={true}/>
+               muted={false}/>
       )
     else
       return (
