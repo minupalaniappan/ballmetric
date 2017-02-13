@@ -1,0 +1,33 @@
+PG::UniqueViolation: ERROR:  duplicate key value violates unique constraint "index_plays_on_event_id_and_mp4"
+DETAIL:  Key (event_id, mp4)=(2, http://nba.cdn.turner.com/nba/big/nba/wsc/2016/09/19/574d499c-ee4b-4cb9-0fc9-547766274b55.nba_6469_768x432_1500.mp4) already exists.
+: INSERT INTO "plays" ("event_id", "description", "mp4", "created_at", "updated_at", "game_id", "playermap") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"
+PG::UniqueViolation: ERROR:  duplicate key value violates unique constraint "index_plays_on_event_id_and_mp4"
+DETAIL:  Key (event_id, mp4)=(2, http://nba.cdn.turner.com/nba/big/nba/wsc/2016/09/19/d6e759e3-92e8-eef9-419a-1310c14e8cf8.nba_5669_768x432_1500.mp4) already exists.
+: INSERT INTO "plays" ("event_id", "description", "mp4", "created_at", "updated_at", "game_id", "playermap") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"
+PG::UniqueViolation: ERROR:  duplicate key value violates unique constraint "index_plays_on_event_id_and_mp4"
+DETAIL:  Key (event_id, mp4)=(2, http://nba.cdn.turner.com/nba/big/nba/wsc/2016/09/19/2eb86e09-dce9-f7e4-b4d9-104ed4ece6f2.nba_7344_768x432_1500.mp4) already exists.
+: INSERT INTO "plays" ("event_id", "description", "mp4", "created_at", "updated_at", "game_id", "playermap") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"
+PG::UniqueViolation: ERROR:  duplicate key value violates unique constraint "index_plays_on_event_id_and_mp4"
+DETAIL:  Key (event_id, mp4)=(2, http://nba.cdn.turner.com/nba/big/nba/wsc/2016/09/19/eaac1039-c831-74cb-e535-fa4b9e97bbdd.nba_7282_768x432_1500.mp4) already exists.
+: INSERT INTO "plays" ("event_id", "description", "mp4", "created_at", "updated_at", "game_id", "playermap") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"
+PG::UniqueViolation: ERROR:  duplicate key value violates unique constraint "index_plays_on_event_id_and_mp4"
+DETAIL:  Key (event_id, mp4)=(2, http://nba.cdn.turner.com/nba/big/nba/wsc/2016/09/19/f9975fb0-62aa-deb0-5fb3-6da7ae7e0b6a.nba_5686_768x432_1500.mp4) already exists.
+: INSERT INTO "plays" ("event_id", "description", "mp4", "created_at", "updated_at", "game_id", "playermap") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"
+PG::UniqueViolation: ERROR:  duplicate key value violates unique constraint "index_plays_on_event_id_and_mp4"
+DETAIL:  Key (event_id, mp4)=(3, http://nba.cdn.turner.com/nba/big/nba/wsc/2016/09/19/fe9d011e-b2fe-da9a-cacc-6cd2436b0bfd.nba_7378_768x432_1500.mp4) already exists.
+: INSERT INTO "plays" ("event_id", "description", "mp4", "created_at", "updated_at", "game_id", "playermap") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"
+PG::UniqueViolation: ERROR:  duplicate key value violates unique constraint "index_plays_on_event_id_and_mp4"
+DETAIL:  Key (event_id, mp4)=(3, http://nba.cdn.turner.com/nba/big/nba/wsc/2016/09/19/2d77e968-671b-853f-fbd6-245b4d663cc9.nba_7283_768x432_1500.mp4) already exists.
+: INSERT INTO "plays" ("event_id", "description", "mp4", "created_at", "updated_at", "game_id", "playermap") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"
+PG::UniqueViolation: ERROR:  duplicate key value violates unique constraint "index_plays_on_event_id_and_mp4"
+DETAIL:  Key (event_id, mp4)=(4, http://nba.cdn.turner.com/nba/big/nba/wsc/2016/09/19/e5bb65b3-f123-231e-f40b-64528e679b36.nba_7330_768x432_1500.mp4) already exists.
+: INSERT INTO "plays" ("event_id", "description", "mp4", "created_at", "updated_at", "game_id", "playermap") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"
+PG::UniqueViolation: ERROR:  duplicate key value violates unique constraint "index_plays_on_event_id_and_mp4"
+DETAIL:  Key (event_id, mp4)=(4, http://nba.cdn.turner.com/nba/big/nba/wsc/2016/09/19/d1bb3360-e262-0fa7-0b0f-a48edd5b182e.nba_7276_768x432_1500.mp4) already exists.
+: INSERT INTO "plays" ("event_id", "description", "mp4", "created_at", "updated_at", "game_id", "playermap") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"
+PG::UniqueViolation: ERROR:  duplicate key value violates unique constraint "index_plays_on_event_id_and_mp4"
+DETAIL:  Key (event_id, mp4)=(5, http://nba.cdn.turner.com/nba/big/nba/wsc/2016/09/19/daf4e004-d5c3-a8d5-88b0-ca5f2eba5298.nba_7329_768x432_1500.mp4) already exists.
+: INSERT INTO "plays" ("event_id", "description", "mp4", "created_at", "updated_at", "game_id", "playermap") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"
+PG::UniqueViolation: ERROR:  duplicate key value violates unique constraint "index_plays_on_event_id_and_mp4"
+DETAIL:  Key (event_id, mp4)=(5, http://nba.cdn.turner.com/nba/big/nba/wsc/2016/09/19/ee5ef94f-1b34-2c95-5c4d-71327ae72ac1.nba_7285_768x432_1500.mp4) already exists.
+: INSERT INTO "plays" ("event_id", "description", "mp4", "created_at", "updated_at", "game_id", "playermap") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"

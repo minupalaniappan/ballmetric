@@ -226,11 +226,32 @@ video {
 .videoBlack {
 	background-color: black; 
 	width: 700px; 
-	height: 393px; 
+	height: 400px; 
 	p {
 		text-align: center; 
 		color: white; 
 		font-family: "Walsheim Light";
 		line-height: 393px;
+	}
+}
+
+.tagList {
+	.row-tag {
+		padding: 8px 0px; 
+		border-bottom: 1px solid $ultra-light-gray;
+		.tag-text {
+			color: $mid-gray;
+			font-family: "Walsheim Light";
+			font-size: 1.2em;
+			&.active {
+				color: $green;
+			}
+		}
+	}
+	.row-tag:hover {
+		cursor: pointer; 
+		p {
+			color: $green;
+		}
 	}
 }

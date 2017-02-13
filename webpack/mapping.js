@@ -7,7 +7,7 @@ export var FetchTagObject = function (values) {
 	switch (true) {
 		case (_.intersection(['Jump', 'Shot'], values).length === 2): 
 			switch (true) {
-				case _.contains('3PT'):
+				case _.contains(values, '3PT'):
 					tag = "3PT Jumpshot";
 					break;
 				case _.contains(values, 'Pull-Up'):
@@ -62,7 +62,7 @@ export var FetchTagObject = function (values) {
 		case _.contains(values, 'BLOCK') || _.contains(values, 'BLO'):
 			tag = "Block";
 			break;
-		case _.contains(values, 'P.FOUL') || _.contains(values, 'FOUL'):
+		case _.contains(values, 'P.FOUL') || _.contains(values, 'Foul') || _.contains(values, 'S.FOUL') || _.contains(values, 'OFF.Foul') || _.contains(values, 'DEF.Foul') || _.contains(values, 'Foul'):
 			tag = "Foul"
 			break;
 		default:
@@ -75,10 +75,6 @@ export var FetchTagObject = function (values) {
 		made = false;
 	} else if (tag != "Block" && tag != "Steal" && tag != "Assist" && tag != "Turnover" && tag != "Rebound") {
 		made = true;
-	}
-	console.log(values);
-	if (tag === null) {
-		console.log(values);
 	}
 	return ({
 		value: tag,

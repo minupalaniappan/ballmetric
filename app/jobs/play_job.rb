@@ -8,14 +8,15 @@ class PlayJob < ActiveJob::Base
 		begin 
 			play = HTTP.get("http://stats.nba.com/stats/videoevents?GameEventID=#{itr}&GameID=#{game_id}").parse
 			playHash = Hash.new
-			playHash['tags'] = []
 			playHash['event_id'] = itr
 			if play['resultSets']['playlist'].length > 0
 				playHash['description'] = play['resultSets']['playlist'][0]['dsc']
 				playHash['mp4'] = fetchURL(play)
+				playHash['playermap'] = []
 				if playHash['mp4'] != "" and playHash['mp4'] != nil
 					begin
 					  game.plays.create(playHash)
+					  puts playHash
 					rescue ActiveRecord::RecordNotUnique => e 
 						puts e
 					end

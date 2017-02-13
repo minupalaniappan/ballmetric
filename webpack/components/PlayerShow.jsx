@@ -19,11 +19,24 @@ const PlayerShow = React.createClass({
   },
   getInitialState: function () {
     return ({
+      start: 0,
+      end: this.props.games.length-1,
+      active: "",
       index: 0,
-      tags: this.fetchTags([0, this.props.games.length]), 
-      mp4s: this.fetchMP4s(null, [0, this.props.games.length])
+      tags: [], 
+      plays: []
     })
   },
+  componentDidMount: function () {
+    this.setState({
+      start: 0,
+      end: this.props.games.length-1,
+      active: "",
+      index: 0,
+      tags: this.fetchTags(), 
+      plays: this.fetchMP4s()
+    })
+  }, 
   headerBlock: function () {
     var player = this.props.player;
     return (
@@ -55,33 +68,52 @@ const PlayerShow = React.createClass({
     });
     return marks;
   }, 
-  fetchTags: function (elems) {
-    var game_capture = this.props.games.slice(elems[0], elems[1]);
-    var plays = this.getPlays(game_capture);
+  fetchTags: function () {
+    var plays = this.fetchMP4s();
     var tagLays = [];
     plays.forEach((play) => {
-      if (play['playermap']) {
-        play['playermap'].forEach((player)=> {
-          if (player['id'] === this.props.player['id']) {
-            tagLays.push(FetchTagObject(player['tags'])); 
-          }
-        });
-      }
+      play['playermap'].forEach((player)=> {
+        if (player['id'] === this.props.player['id']) {
+          tagLays.push(FetchTagObject(player['tags'])); 
+        }
+      });
     });
     return (tagLays);
   }, 
-  fetchMP4s: function (dummy, elems) {
-    var game_capture = this.props.games.slice(elems[0], elems[1]);
+  fetchMP4s: function (dummy) {
+    var game_capture = this.props.games.slice(this.state.start, this.state.end);
     var plays = this.getPlays(game_capture);
     plays = plays.filter((play) => {
       return (_.contains(_.pluck(play['playermap'], 'id'), this.props.player['id']))
     });
-    return (_.pluck(plays, 'mp4'));
+    return (plays);
+  },
+  filterPlays: function (tag) {
+    var active = tag;
+    var player = this.props.player;
+    var plays_ = this.fetchMP4s();
+    if (active) {
+      plays_ = plays_.filter((event) => {
+        var flags = event['playermap'].map((pos) => {
+          if (player['id'] === pos['id']) {
+            return (active === FetchTagObject(pos['tags']).value)
+          }
+        });
+        return (_.contains(flags, true))
+      });
+    }
+    return (plays_);
   },
   dateListener: function (event, elems) {
     this.setState({
-      mp4s: this.fetchMP4s(null, elems),
-      tags: this.fetchTags(elems)
+      start: elems[0],
+      end: elems[1]
+    }, () => {
+      this.setState({
+        active: "",
+        plays: this.fetchMP4s(),
+        tags: this.fetchTags()
+      })
     });
   }, 
   getPlays: function (games) {
@@ -132,7 +164,7 @@ const PlayerShow = React.createClass({
   },
   videoEnded: function () {
     var index; 
-    if (this.state.index === this.state.mp4s.length-1)
+    if (this.state.index === this.state.plays.length-1)
       index = 0;
     else
       index = this.state.index + 1; 
@@ -142,16 +174,16 @@ const PlayerShow = React.createClass({
     });
   }, 
   videoStream: function () {
-    var mp4s = this.state.mp4s; 
+    var mp4s = this.state.plays; 
     if (mp4s.length)
       return (
         <video id = "stream_frame" 
                className="video" 
                onClick={this.control} 
                onEnded={this.videoEnded} 
-               autoPlay={true} 
+               autoPlay={(this.state.index !== 0)} 
                controls = {false} 
-               src={mp4s[this.state.index]} 
+               src={this.state.plays[this.state.index]['mp4']} 
                muted={true}/>
       )
     else
@@ -162,8 +194,55 @@ const PlayerShow = React.createClass({
       )
   }, 
   tagStream: function () {
-    console.log(this.state.tags);
-    return [];
+    var tags = _.uniq(_.pluck(this.state.tags, 'value'));
+    return (this.generateTags(tags));
+  },
+  activateFilter: function (event) {
+    var tag = event.props.tag;
+    var flag = (this.state.active === tag); 
+    if (flag) {
+      this.setState({
+        index: 0,
+        active: "", 
+        plays: this.fetchMP4s()
+      })
+    } else {
+      this.setState({
+        index: 0,
+        active: tag, 
+        plays: this.filterPlays(tag)
+      })
+    }
+  },
+  generateTags: function (tags) {
+    var elements = tags.map((tag) => {
+      return (
+        <Tag tag={tag}
+             active={this.state.active === tag}
+             activateFilter={this.activateFilter}
+             key={Math.random()}
+        />
+      )
+    });
+    var content;
+    if (elements.length) {
+      content = (
+        <div>
+          <h4>Refine search</h4>
+          { elements }
+        </div>
+      )
+    } else {
+      content = (
+        <h4>No tags available</h4>
+      )
+    }
+
+    return (
+      <div className = "tagList">
+        { content }
+      </div>
+    )
   },
   bodyBlock: function () {
     var slider = this.generateSlider();
