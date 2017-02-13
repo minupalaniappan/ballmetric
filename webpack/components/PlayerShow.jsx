@@ -249,7 +249,7 @@ const PlayerShow = React.createClass({
       )
     });
     var content;
-    if (elements.length) {
+    if (elements.length || this.fetchTags().length) {
       content = (
         <div>
           <h4>Refine search</h4>
