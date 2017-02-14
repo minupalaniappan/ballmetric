@@ -14,7 +14,7 @@ class PlayersController < ApplicationController
 		_players_wUrl = _players.map {
 			|player|
 			player = player['player']
-			player['url'] = Player.where(urlName: player['urlName'])[0].base_uri
+			player['url'] = Player.where(urlName: player['urlName'])[0].base_uri + "?video=1"
 			player
 		}
 
@@ -26,7 +26,6 @@ class PlayersController < ApplicationController
 
 	def show
 		ActiveRecord::Base.include_root_in_json = true
-		@urlArgs = params['q'].to_s
 		player = Player.friendly.find(params[:id])
 		_games = Game.where('home_team=? OR away_team=?', player['teams'][0], player['teams'][0])
 		playArr = Array.new
@@ -37,12 +36,23 @@ class PlayersController < ApplicationController
 				playArr.push play
 			}
 		}
+		if params[:type] == nil
+			params[:type] = ""
+		end
+		if params[:start] == nil
+			params[:start] = ""
+		end
+		if params[:end] == nil
+			params[:end] = ""
+		end
 		@props = {
 			player: player.attributes,
 			games: mapArr(_games), 
 			plays: mapArr(playArr),
-			prependedArguments: @urlArgs
+			prependedArguments: [params[:type], params[:video]],
+			dates: [params[:start], params[:end]]
 		}.to_json
+		puts @props
 	end
 
 end

@@ -15,14 +15,15 @@ const PlayerShow = React.createClass({
     player: React.PropTypes.object,
     games: React.PropTypes.array,
     plays: React.PropTypes.array,
-    prependedArguments: React.PropTypes.string
+    prependedArguments: React.PropTypes.array,
+    dates: React.PropTypes.array
   },
   getInitialState: function () {
     return ({
-      start: 0,
-      end: this.props.games.length-1,
-      active: "",
-      index: 0,
+      start: (this.props.dates[0] === "") ? 0 : this.props.dates[0],
+      end: (this.props.dates[1] === "") ? 81 : this.props.dates[1],
+      active: this.props.prependedArguments[0],
+      index: this.props.prependedArguments[1]-1,
       tags: [], 
       plays: [], 
       tagSearchValue: ''
@@ -43,7 +44,6 @@ const PlayerShow = React.createClass({
 
       if (this.state.tagSearchValue === "") {
         var tags_filtered = this.fetchTags();
-        console.log(tags_filtered);
       }
 
       this.setState({
@@ -52,13 +52,14 @@ const PlayerShow = React.createClass({
     });
   }, 
   componentDidMount: function () {
+    var plays = this.filterPlays(this.props.prependedArguments[0]);
     this.setState({
-      start: 0,
-      end: this.props.games.length-1,
-      active: "",
-      index: 0,
-      tags: this.fetchTags(), 
-      plays: this.fetchMP4s()
+      start: (this.props.dates[0] === "") ? 0 : parseInt(this.props.dates[0]),
+      end: (this.props.dates[1] === "") ? 81 : parseInt(this.props.dates[1]),
+      plays: plays,
+      active: this.props.prependedArguments[0],
+      index: (plays.length <= this.props.prependedArguments[1]-1) ? 0 : this.props.prependedArguments[1]-1,
+      tags: this.fetchTags()
     })
   }, 
   headerBlock: function () {
@@ -72,16 +73,19 @@ const PlayerShow = React.createClass({
   },
   generateDatesOfGames: function () {
     var dates = _.map(this.props.games, (event)=> {
-      return {
-        day: event.day,
-        month: event.month,
-        year:event.year,
-        id: event.day + " " + event.month + " " + event.year,
-        date_object: new Date(event.year, event.month-1, event.day).toDateString()
+      var game_id = event['id'];
+      var ids = _.uniq(_.pluck(this.props.plays, 'game_id'));
+      if (_.contains(ids, game_id)) {
+        return {
+          day: event.day,
+          month: event.month,
+          year:event.year,
+          id: event.day + " " + event.month + " " + event.year,
+          date_object: new Date(event.year, event.month-1, event.day).toDateString()
+        }
       }
     });
-
-    return (dates);
+    return (dates.filter(function(e){return e}));
   },
   generateMarks: function (dates) {
     var marks = {}; 
@@ -150,14 +154,14 @@ const PlayerShow = React.createClass({
     return (plays);
   },
   generateSlider: function () {
-    var dates = _.uniq(this.generateDatesOfGames())
+    var dates = _.uniq(this.generateDatesOfGames());
     var marks = this.generateMarks(dates)
     var slider_props = {
         allowCross: false,
         pushable: false,
         min: 0,
         max: dates.length-1,
-        defaultValue: [0,dates.length],
+        defaultValue: [parseInt(this.state.start),parseInt(this.state.end)],
         onChange: this.dateListener.bind(null, dates),
         marks: marks, 
         handle: (props) => {
@@ -206,7 +210,7 @@ const PlayerShow = React.createClass({
                className="video" 
                onClick={this.control} 
                onEnded={this.videoEnded} 
-               autoPlay={(this.state.index !== 0)} 
+               autoPlay={(this.state.index !== this.props.prependedArguments[1]-1 && this.state.index4)} 
                controls = {false} 
                src={this.state.plays[this.state.index]['mp4']} 
                muted={false}/>

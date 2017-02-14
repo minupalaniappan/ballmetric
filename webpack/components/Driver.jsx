@@ -18,7 +18,8 @@ var driverFunction = function (page) {
 				player: window.object.player,
 				games: window.object.games, 
 				plays: window.object.plays,
-				prependedArguments: window.object.urlArgs
+				prependedArguments: window.object.prependedArguments,
+				dates: window.object.dates
 			}
 			ReactDOM.render(<PlayerShow {...PlayerShowProps} />, document.getElementById('playershow'));
 			break;
