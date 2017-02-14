@@ -69,6 +69,7 @@ const PlayerShow = React.createClass({
       <div>
         <h1>{`${player.firstName} ${player.lastName}`}</h1>
         <h4>{`${player.heightFeet}'${player.heightInches} ${player.posExpanded} for ${player.citys[0]}`}</h4>
+        <a href = "/players"><h4 className="back-link">View another player</h4></a>
       </div>
     );
   },
@@ -225,7 +226,7 @@ const PlayerShow = React.createClass({
                autoPlay={true} 
                controls = {false} 
                src={this.state.plays[this.state.index]['mp4']} 
-               muted={false}/>
+               muted={true}/>
       )
     else
       return (

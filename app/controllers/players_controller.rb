@@ -49,7 +49,7 @@ class PlayersController < ApplicationController
 			player: player.attributes,
 			games: mapArr(_games), 
 			plays: mapArr(playArr),
-			prependedArguments: [params[:type], params[:video]],
+			prependedArguments: [params[:tag], params[:video]],
 			dates: [params[:start], params[:end]]
 		}.to_json
 		puts @props
