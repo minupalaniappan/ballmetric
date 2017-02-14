@@ -15,6 +15,7 @@
     "rc-tooltip": "^3.4.2",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "react-router": "^3.0.2",
     "react-tools": "^0.13.3",
     "requirejs-react-jsx": "^1.0.2",
     "stats-webpack-plugin": "^0.4.3",

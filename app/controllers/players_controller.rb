@@ -14,7 +14,7 @@ class PlayersController < ApplicationController
 		_players_wUrl = _players.map {
 			|player|
 			player = player['player']
-			player['url'] = Player.where(urlName: player['urlName'])[0].base_uri + "?video=1"
+			player['url'] = Player.where(urlName: player['urlName'])[0].base_uri
 			player
 		}
 

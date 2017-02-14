@@ -1,6 +1,7 @@
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 import React, { PropTypes } from 'react';
+import { browserHistory } from 'react-router';
 import _ from 'underscore';
 import Slider, { Range, Handle } from 'rc-slider';
 import Tooltip from 'rc-tooltip';
@@ -23,7 +24,6 @@ const PlayerShow = React.createClass({
       start: (this.props.dates[0] === "") ? 0 : this.props.dates[0],
       end: (this.props.dates[1] === "") ? 81 : this.props.dates[1],
       active: this.props.prependedArguments[0],
-      index: this.props.prependedArguments[1]-1,
       tags: [], 
       plays: [], 
       tagSearchValue: ''
@@ -53,12 +53,13 @@ const PlayerShow = React.createClass({
   }, 
   componentDidMount: function () {
     var plays = this.filterPlays(this.props.prependedArguments[0]);
+    var index  = (this.props.prependedArguments[1] === null) ? 0 : (plays.length <= this.props.prependedArguments[1]-1) ? 0 : this.props.prependedArguments[1]-1
     this.setState({
       start: (this.props.dates[0] === "") ? 0 : parseInt(this.props.dates[0]),
       end: (this.props.dates[1] === "") ? 81 : parseInt(this.props.dates[1]),
       plays: plays,
       active: this.props.prependedArguments[0],
-      index: (plays.length <= this.props.prependedArguments[1]-1) ? 0 : this.props.prependedArguments[1]-1,
+      index: index,
       tags: this.fetchTags()
     })
   }, 
@@ -134,15 +135,20 @@ const PlayerShow = React.createClass({
     return (plays_);
   },
   dateListener: function (event, elems) {
+    var player = this.props.player;
+    console.log(player);
+    console.log(player['slug']);
     this.setState({
       start: elems[0],
-      end: elems[1]
+      end: elems[1], 
+      index: 0
     }, () => {
+      browserHistory.push(player['slug'] + `?start=${elems[0]}&end=${elems[1]}&video=${1}`);
       this.setState({
         active: "",
         plays: this.fetchMP4s(),
         tags: this.fetchTags()
-      })
+      });
     });
   }, 
   getPlays: function (games) {
@@ -210,7 +216,7 @@ const PlayerShow = React.createClass({
                className="video" 
                onClick={this.control} 
                onEnded={this.videoEnded} 
-               autoPlay={(this.state.index !== this.props.prependedArguments[1]-1 && this.state.index4)} 
+               autoPlay={true} 
                controls = {false} 
                src={this.state.plays[this.state.index]['mp4']} 
                muted={false}/>
@@ -233,12 +239,19 @@ const PlayerShow = React.createClass({
         index: 0,
         active: "", 
         plays: this.fetchMP4s()
+      }, () => {
+
       })
     } else {
+      var player = this.props.player;
+      var start = this.state.start; 
+      var end = this.state.end;
       this.setState({
         index: 0,
         active: tag, 
         plays: this.filterPlays(tag)
+      }, ()=> {
+          browserHistory.push(player['slug'] + `?start=${start}&end=${end}&tag=${tag}&video=${1}`);
       })
     }
   },
