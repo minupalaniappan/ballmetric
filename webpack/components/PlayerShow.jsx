@@ -208,7 +208,6 @@ const PlayerShow = React.createClass({
     this.setState({
       index: index
     }, ()=> {
-      console.log(index);
       if (activeTag !== "")
         browserHistory.push(player['slug'] + `?start=${start}&end=${end}&tag=${activeTag}&video=${index}`);
       else
