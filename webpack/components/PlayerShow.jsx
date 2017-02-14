@@ -63,13 +63,21 @@ const PlayerShow = React.createClass({
       tags: this.fetchTags()
     })
   }, 
+  headBack: function () {
+    browserHistory.push('/players');
+    window.location.href = location;
+  },
   headerBlock: function () {
     var player = this.props.player;
     return (
-      <div>
-        <h1>{`${player.firstName} ${player.lastName}`}</h1>
-        <h4>{`${player.heightFeet}'${player.heightInches} ${player.posExpanded} for ${player.citys[0]}`}</h4>
-        <a href = "/players"><h4 className="back-link">View another player</h4></a>
+      <div className = "pos-rel">
+        <div className="inline vert-middle pos-rel">
+          <h1>{`${player.firstName} ${player.lastName}`}</h1>
+          <h4>{`${player.heightFeet}'${player.heightInches} ${player.posExpanded} for ${player.citys[0]}`}</h4>
+        </div>
+        <div className="inline vert-middle btn-back" onClick={this.headBack}>
+          <h4 className="back-link">View another player</h4>
+        </div>
       </div>
     );
   },
@@ -142,7 +150,7 @@ const PlayerShow = React.createClass({
       end: elems[1], 
       index: 0
     }, () => {
-      browserHistory.push(player['slug'] + `?start=${elems[0]}&end=${elems[1]}&video=${1}`);
+      browserHistory.push(player['slug'] + `?start=${elems[0]}&end=${elems[1]}&video=${0}`);
       this.setState({
         active: "",
         plays: this.fetchMP4s(),
@@ -226,7 +234,7 @@ const PlayerShow = React.createClass({
                autoPlay={true} 
                controls = {false} 
                src={this.state.plays[this.state.index]['mp4']} 
-               muted={true}/>
+               muted={false}/>
       )
     else
       return (

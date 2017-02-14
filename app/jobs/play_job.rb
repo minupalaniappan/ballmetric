@@ -1,6 +1,6 @@
 class PlayJob < ActiveJob::Base
 	@queue = :default
-	def fetchPlayIds (game)
+	def self.fetchPlayIds (game)
 		game_id = game['game_id']
 		itr = 2
 		error_itr = 0
@@ -31,12 +31,13 @@ class PlayJob < ActiveJob::Base
 		end until (error_itr > 5)
 	end
 
-	def fetchURL (play)
+	def self.fetchURL (play)
 		if (play['resultSets']['Meta']['videoUrls'].length != 0 and play['resultSets']['playlist'].length != 0)
 			uuid = play['resultSets']['Meta']['videoUrls'][0]['uuid']
 			urlResponse = play['resultSets']['Meta']['videoUrls'][0]['stp']
 			playList = play['resultSets']['playlist'][0]
-			video_code = Excon.get("http://www.nba.com/video/wsc/league/#{uuid}.xml").body.to_s.split('_')[3]
+			video_code = HTTP.get("http://www.nba.com/video/wsc/league/#{uuid}.xml").to_s.split('_')[3]
+			puts video_code
 			if video_code == "151116" and urlResponse != nil
 				return ("")
 			end
@@ -96,7 +97,7 @@ class PlayJob < ActiveJob::Base
 		}
 	end
 
-	def driver (game)
+	def self.driver (game)
 		fetchPlayIds game
 	end
 

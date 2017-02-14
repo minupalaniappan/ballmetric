@@ -89,7 +89,8 @@ a {
 
 .back-link {
 	margin: 5px 0px; 
-	color: $dark-blue;
+	color: white;
+
 }
 
 h1 {
@@ -280,4 +281,28 @@ video {
 .tagList {
 	max-height: 400px; 
 	overflow-y: scroll;
+}
+
+.pos-rel {
+	position: relative;
+}
+
+.btn-back {
+	padding: 8px; 
+	background-color: $dark-blue;
+	border-radius: 3px; 
+	position: absolute;
+    right: 0px;
+    top: 20px;
+    &:hover {
+    	cursor: pointer;
+    }
+}
+
+.vert-top {
+	vertical-align: text-top;
+}
+
+.vert-middle {
+	vertical-align: middle;
 }
