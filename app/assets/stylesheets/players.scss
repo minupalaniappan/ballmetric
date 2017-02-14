@@ -14,48 +14,29 @@ $green: #12D18B;
 }
 
 @font-face {
-    font-family: 'Walsheim-Bold';
+    font-family: 'Circular-Bold';
     src:font-url('Bold.ttf') format('truetype');
 }  
 
 @font-face {
-    font-family: 'Walsheim Bold';
+    font-family: 'Circular Bold';
     src:font-url('Bold.ttf') format('truetype');
 }  
 
 @font-face {
-    font-family: 'Walsheim Bold Oblique';
-    src:font-url('BoldOblique.ttf') format('truetype');
-}  
-
-@font-face {
-    font-family: 'Walsheim Light';
-    src:font-url('Light.ttf') format('truetype');
-}  
-
-@font-face {
-    font-family: 'Walsheim Light Oblique';
-    src:font-url('LightOblique.ttf') format('truetype');
-}  
-
-@font-face {
-    font-family: 'Walsheim Medium';
-    src:font-url('Medium.ttf') format('truetype');
-}  
-
-@font-face {
-    font-family: 'Walsheim Medium Oblique';
-    src:font-url('MediumOblique.ttf') format('truetype');
-}  
-
-@font-face {
-    font-family: 'Walsheim Regular';
+    font-family: 'Circular Light';
     src:font-url('Regular.ttf') format('truetype');
 }  
 
 @font-face {
-    font-family: 'Walsheim Thin';
-    src:font-url('Thin.ttf') format('truetype');
+    font-family: 'Circular Medium';
+    src:font-url('Medium.ttf') format('truetype');
+}  
+
+
+@font-face {
+    font-family: 'Circular Regular';
+    src:font-url('Regular.ttf') format('truetype');
 }  
 
 html, body {
@@ -80,7 +61,7 @@ html, body {
 * {
 	text-decoration: none;
 	margin: 0px;
-	font-family: "Walsheim Regular";
+	font-family: "Circular Regular";
 }
 
 a {
@@ -94,18 +75,18 @@ a {
 }
 
 h1 {
-	font-family: "Walsheim Medium";
+	font-family: "Circular Regular";
 	font-size: 3em;
 	color: $green;
 }
 
 h2 {
-	font-family: "Walsheim Regular";
+	font-family: "Circular Regular";
 	font-size: 1.4em;
 }
 
 h4 {
-	font-family: "Walsheim Light";
+	font-family: "Circular Light";
 	font-size: 1em;
 	color: $light-gray;
 }
@@ -176,7 +157,7 @@ h4 {
 
 .active, .available, .reset {
 	.tag-title {
-		font-family: "Walsheim Regular";
+		font-family: "Circular Regular";
 		font-size: 0.8em;
 	}
 }
@@ -247,7 +228,7 @@ video {
 	p {
 		text-align: center; 
 		color: white; 
-		font-family: "Walsheim Light";
+		font-family: "Circular Light";
 		line-height: 393px;
 	}
 }
@@ -258,7 +239,7 @@ video {
 		border-bottom: 1px solid $ultra-light-gray;
 		.tag-text {
 			color: $mid-gray;
-			font-family: "Walsheim Light";
+			font-family: "Circular Light";
 			font-size: 1.2em;
 			&.active {
 				color: $green;
