@@ -20,7 +20,6 @@ const PlayerShow = React.createClass({
     dates: React.PropTypes.array
   },
   getInitialState: function () {
-    console.log(this.props.plays);
     return ({
       start: (this.props.dates[0] === "") ? 0 : this.props.dates[0],
       end: (this.props.dates[1] === "") ? 81 : this.props.dates[1],
