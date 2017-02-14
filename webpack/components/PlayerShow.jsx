@@ -53,7 +53,7 @@ const PlayerShow = React.createClass({
   }, 
   componentDidMount: function () {
     var plays = this.filterPlays(this.props.prependedArguments[0]);
-    var index  = (this.props.prependedArguments[1] === null) ? 0 : (plays.length <= this.props.prependedArguments[1]-1) ? 0 : this.props.prependedArguments[1]-1
+    var index  = (this.props.prependedArguments[1] === null) ? 1 : (plays.length <= this.props.prependedArguments[1]) ? 1 : this.props.prependedArguments[1]
     this.setState({
       start: (this.props.dates[0] === "") ? 0 : parseInt(this.props.dates[0]),
       end: (this.props.dates[1] === "") ? 81 : parseInt(this.props.dates[1]),
@@ -136,8 +136,6 @@ const PlayerShow = React.createClass({
   },
   dateListener: function (event, elems) {
     var player = this.props.player;
-    console.log(player);
-    console.log(player['slug']);
     this.setState({
       start: elems[0],
       end: elems[1], 
@@ -199,13 +197,22 @@ const PlayerShow = React.createClass({
   },
   videoEnded: function () {
     var index; 
+    var player = this.props.player;
+    var activeTag = this.state.active; 
+    var start = this.state.start; 
+    var end = this.state.end;
     if (this.state.index === this.state.plays.length-1)
       index = 0;
     else
-      index = this.state.index + 1; 
-
+      index = parseInt(this.state.index) + 1; 
     this.setState({
       index: index
+    }, ()=> {
+      console.log(index);
+      if (activeTag !== "")
+        browserHistory.push(player['slug'] + `?start=${start}&end=${end}&tag=${activeTag}&video=${index}`);
+      else
+        browserHistory.push(player['slug'] + `?start=${start}&end=${end}&video=${index}`);
     });
   }, 
   videoStream: function () {
