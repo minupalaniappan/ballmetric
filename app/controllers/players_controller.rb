@@ -29,13 +29,13 @@ class PlayersController < ApplicationController
 		player = Player.friendly.find(params[:id])
 		_games = Game.where('home_team=? OR away_team=?', player['teams'][0], player['teams'][0])
 		playArr = Array.new
-		_games.each {
+		playArr = _games.map {
 			|game|
-			game.plays.each {
-				|play|
-				playArr.push play
-			}
+			plays = Play.where('game_id=?', game['id'])
+			plays
 		}
+		playArr = playArr.select { |arr| arr.length > 0 }
+		playArr = playArr.map { |game| mapArr game }
 		if params[:type] == nil
 			params[:type] = ""
 		end
@@ -48,11 +48,10 @@ class PlayersController < ApplicationController
 		@props = {
 			player: player.attributes,
 			games: mapArr(_games), 
-			plays: mapArr(playArr),
+			plays: playArr.flatten,
 			prependedArguments: [params[:tag], params[:video]],
 			dates: [params[:start], params[:end]]
 		}.to_json
-		puts @props
 	end
 
 end
