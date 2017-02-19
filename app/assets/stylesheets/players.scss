@@ -10,6 +10,30 @@ $dark-blue: #003569;
 $green: #2eefa8;
 $dark-black: #212121;
 
+img {
+	vertical-align: middle;
+}
+
+p[alt="twitter"]:hover {
+	color:#00aced;
+}
+
+p[alt="producthunt"]:hover {
+	color:#da552f;
+}
+
+.marg5 {
+	margin-left: 20px;
+	&:hover {
+		cursor: pointer;
+	}
+}
+
+
+.marg2 {
+	margin-left: 3px;
+}
+
 @mixin vertical-align($position: relative) {
   position: $position;
 }
@@ -50,6 +74,11 @@ html, body {
 }
 
 /* slider */ 
+
+.socialFontIco {
+	font-family: "Circular Light";
+	color: white; 
+}
 
 .rc-slider-mark-text {
 	width: 18%;

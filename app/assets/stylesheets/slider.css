@@ -1,5 +1,9 @@
 /* RC SLIDER */ 
 
+img[alt="Twitter"] {
+  fill: blue;
+}
+
 .rc-slider {
   position: relative;
   padding: 5px 0;
