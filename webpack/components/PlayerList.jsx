@@ -30,11 +30,14 @@ var PlayerList = React.createClass({
   handleChange: function (event) {
     var state = this;
     var text = event.target.value;
-    $.getJSON('/api/v1/players/fetchPlayers?query=' + text, function(data) {
-        state.setState ({
-          value: text, 
-          players: data['players']
-        })
+    state.setState({
+      value: text
+    }, () => {
+      $.getJSON('/api/v1/players/fetchPlayers?query=' + text, function(data) {
+          state.setState ({
+            players: data['players']
+          })
+      });
     });
   }, 
   render: function() {

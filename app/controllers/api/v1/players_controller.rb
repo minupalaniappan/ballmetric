@@ -87,7 +87,11 @@ class Api::V1::PlayersController < ApplicationController
 			lname.include? search_text or
 			(fname + " " + lname).include? search_text
 		}
-		players = mapArr players
+		if search_text == ""
+			players = []
+		else
+			players = mapArr players
+		end
 		render json: {status: 'SUCCESS', message: 'Successful', players: players}, status: :ok
 
 	end
