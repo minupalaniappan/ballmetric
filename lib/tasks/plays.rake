@@ -4,7 +4,7 @@ namespace :plays do
 		games = Game.all
 		games.each {
 			|game|
-			PlayJob.assignPlayers game
+			PlayJob.perform_later game
 		}
 	end
 end
