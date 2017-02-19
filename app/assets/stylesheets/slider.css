@@ -2,7 +2,6 @@
 
 .rc-slider {
   position: relative;
-  height: 14px;
   padding: 5px 0;
   width: 100%;
   border-radius: 6px;
@@ -16,38 +15,34 @@
 .rc-slider-rail {
   position: absolute;
   width: 100%;
-  background-color: #E6E6E6;
+  background-color: #2eefa8;
   height: 2px;
 }
 .rc-slider-track {
   position: absolute;
   left: 0;
-  height: 4px;
+  height: 2px;
   border-radius: 6px;
-  background-color: #47E65A;
+  background-color: white;
 }
 .rc-slider-handle {
   position: absolute;
-  margin-left: -7px;
-  margin-top: -9px;
-  width: 22px;
-  height: 22px;
+  margin-left: -5px;
+  margin-top: -6px;
+
+  width: 15px;
+  height: 15px;
   cursor: pointer;
   border-radius: 50%;
-  border: solid 1px #DEDEDE;
-  background-color: #fff;
+  border: solid 2px #fafafa;
+  background-color: #fafafa;
 }
 
 .rc-slider-handle:hover {
-  border-color: #696969;
+  border-color: #fafafa;
 }
 .rc-slider-handle:active {
-  width: 25px;
-  height: 25px;
-  margin-left: -9px;
-  margin-top: -12px;
-  border-color: #B8B8B8;
-  box-shadow: 0 0 5px #DEDEDE;
+  border-color: #fafafa;
 }
 .rc-slider-mark {
   position: absolute;

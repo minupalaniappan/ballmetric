@@ -7,7 +7,8 @@ $light-gray: #B5B5B5;
 $mid-gray: #4a4a4a;
 $dark-gray: #999;
 $dark-blue: #003569;
-$green: #12D18B;
+$green: #2eefa8;
+$dark-black: #212121;
 
 @mixin vertical-align($position: relative) {
   position: $position;
@@ -45,6 +46,7 @@ html, body {
 	max-width: 700px; 
 	margin: 0 auto;
 	height: 100%;
+	background-color: $dark-black;
 }
 
 /* slider */ 
@@ -88,10 +90,11 @@ h2 {
 h4 {
 	font-family: "Circular Light";
 	font-size: 1em;
-	color: $light-gray;
+	color: white;
 }
 
 .vertical-align-div {
+	margin-top: 30%;
 	@include vertical-align();
 }
 
@@ -111,14 +114,19 @@ h4 {
 .form-search {
 	border: none;
     border-radius: 2px;
-    border: 1px solid $light-gray;
+    border: 2px solid $green;
+    background-color: $dark-black;
     outline: none;
     font-size: 1.2em;
     padding: 10px;
     box-sizing:border-box;
     width: 100%;
     margin: 15px 0px;
+    color: white;
+}
 
+::-webkit-input-placeholder {
+   color: white;
 }
 
 .tag-search {
@@ -215,10 +223,9 @@ video {
 }
 
 .tier-slider {
-	margin: 15px 0px;
-	padding: 15px 25px 30px 25px; 
+	margin-top: 15px;
+	padding: 15px 10px 30px 5px; 
 	border-radius: 3px;
-	border: 1px solid $ultra-light-gray;
 }
 
 .videoBlack {
@@ -236,9 +243,10 @@ video {
 .tagList {
 	.row-tag {
 		padding: 8px 0px; 
-		border-bottom: 1px solid $ultra-light-gray;
+		display: inline-block;
+		margin-right: 25px;
 		.tag-text {
-			color: $mid-gray;
+			color: white;
 			font-family: "Circular Light";
 			font-size: 1.2em;
 			&.active {
@@ -258,20 +266,15 @@ video {
 	height: 400px;
 	background-color: black;
 }
-
-.tagList {
-	max-height: 400px; 
-	overflow-y: scroll;
-}
-
 .pos-rel {
 	position: relative;
 }
 
 .btn-back {
 	padding: 8px; 
-	background-color: $dark-blue;
+	background-color: $dark-black;
 	border-radius: 3px; 
+	border: 2px solid $green;
 	position: absolute;
     right: 0px;
     top: 20px;

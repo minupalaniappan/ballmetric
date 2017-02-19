@@ -1,6 +1,6 @@
 class PlayJob < ActiveJob::Base
 	@queue = :default
-	def self.fetchPlayIds (game)
+	def fetchPlayIds (game)
 		game_id = game['game_id']
 		itr = 2
 		error_itr = 0
@@ -31,7 +31,7 @@ class PlayJob < ActiveJob::Base
 		end until (error_itr > 5)
 	end
 
-	def self.fetchURL (play)
+	def fetchURL (play)
 		if (play['resultSets']['Meta']['videoUrls'].length != 0 and play['resultSets']['playlist'].length != 0)
 			uuid = play['resultSets']['Meta']['videoUrls'][0]['uuid']
 			urlResponse = play['resultSets']['Meta']['videoUrls'][0]['stp']
@@ -49,7 +49,7 @@ class PlayJob < ActiveJob::Base
 		end
 	end
 
-	def self.fetchTags (desc, name_)
+	def fetchTags (desc, name_)
 		specialChars = ["#", "@"]
 		desc_arr = desc.split(/[()]/)
 		desc_arr.each {
@@ -63,7 +63,7 @@ class PlayJob < ActiveJob::Base
 		return []
 	end
 
-	def self.assignPlayers (game)
+	def assignPlayers (game)
 		home_roster = Roster.find_by(name: game['home_team']).players
 		away_roster = Roster.find_by(name: game['away_team']).players
 		game.plays.each {
@@ -97,12 +97,13 @@ class PlayJob < ActiveJob::Base
 		}
 	end
 
-	def self.driver (game)
+	def driver (game)
 		fetchPlayIds game
 	end
 
 	def perform(game)
    	 	# Do something later
    	 	fetchPlayIds game
+   	 	assignPlayers game
   	end
 end
