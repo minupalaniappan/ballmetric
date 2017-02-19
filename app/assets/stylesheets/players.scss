@@ -287,3 +287,38 @@ video {
 .vert-middle {
 	vertical-align: middle;
 }
+
+ .blur {
+  filter: blur(2px);
+}
+
+.center-icon {
+	text-align: center; 
+	position: relative;
+    top: 35%;
+	p {
+		margin: 10px 0px;
+		color: white; 
+		font-family: "Circular Regular"
+	}
+}
+
+.posRel {
+	position: relative;
+	.ico {
+		position: absolute;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: auto;
+		margin-bottom: auto;
+		left: 0;
+		right: 0;
+		top: 0; 
+		bottom: 0;
+		z-index: 999;
+	}
+}
+
+.eIcon {
+	color: white;
+}

@@ -7,21 +7,14 @@ const PlayerShow = require('./PlayerShow.jsx').default
 var driverFunction = function (page) {
 	switch (page) {
 		case "player_list_data":
-			var PlayerListProps = {
-				title: "Ballmetric", 
-				players: window.object.players
-			}
-			ReactDOM.render(<PlayerList {...PlayerListProps} />, document.getElementById('playerlist'));
+			ReactDOM.render(<PlayerList />, document.getElementById('playerlist'));
 			break; 
 		case "player_show_data": 
 			var PlayerShowProps = {
 				player: window.object.player,
-				games: window.object.games, 
-				plays: window.object.plays,
 				prependedArguments: window.object.prependedArguments,
-				dates: window.object.dates
 			}
-			ReactDOM.render(<PlayerShow {...PlayerShowProps} />, document.getElementById('playershow'));
+			ReactDOM.render(<PlayerShow {...PlayerShowProps}/>, document.getElementById('playershow'));
 			break;
 		default:
 			break;
