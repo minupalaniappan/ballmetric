@@ -104,7 +104,7 @@ class Api::V1::PlayersController < ApplicationController
 			|game|
 			game.plays.to_a.length > 0
 		}
-		games = games.to_a.each_with_index.select{
+		games = games.to_a.reverse.each_with_index.select{
 			|game, idx|
 			idx.between?(_start,_end)
 		}
@@ -117,7 +117,11 @@ class Api::V1::PlayersController < ApplicationController
 		player = Player.find(params[:playerId])
 		_start = params[:start].to_i
 		_end = params[:end].to_i
-		games = Game.where('home_team=? OR away_team=?', player['teams'][0], player['teams'][0])
+		games = Game.where('home_team=? OR away_team=?', player['teams'][0], player['teams'][0]).reverse
+		games = games.select {
+			|game|
+			game.plays.length > 0
+		}
 		tags = Play.joins(:game).where(:game_id => games).all.map {
 			|play|
 			mappedPlay = play.playermap.map { 
@@ -142,7 +146,7 @@ class Api::V1::PlayersController < ApplicationController
 				mp['id'] == player['id'] and (classifyTag(mp['tags'])['value'] == tagType or tagType == "")
 			}
 			playermapId.length > 0
-		}.to_a
+		}.to_a.reverse
 		if (videoId.to_i > play.length-1)
 			render json: {status: 'ERROR', message: 'Index out of range', play: [], tags: []}, status: :ok
 		elsif (play.length > 0)

@@ -91,7 +91,8 @@ const PlayerShow = React.createClass({
           browserHistory.push(player['slug'] + `?start=${start}&end=${end}&videoId=${0}&tag=${tag}&playerId=${player['id']}`);
         });
       } else if (data.play.mp4.includes("__")) {
-        this.engine(this.state.start, this.state.end, this.state.tag, (this.state.index+1));
+        console.log(this.state);
+        state.engine(start, end, tag, (index+1));
       } else {
         var tags = _.compact(_.uniq(_.pluck(data.tags, 'value')));
         args.outOfRange = false;
@@ -177,7 +178,6 @@ const PlayerShow = React.createClass({
     var start = this.state.start; 
     var end = this.state.end;
     index = parseInt(this.state.index) + 1;
-    console.log("video ended");
     this.engine(start, end, tag, index)
 
   },
