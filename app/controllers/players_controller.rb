@@ -11,7 +11,7 @@ class PlayersController < ApplicationController
 				end: params[:end], 
 				tag: params[:tag], 
 				videoId: params[:videoId], 
-				playerId: params[:playerId]
+				playerId: params[:playerid]
 			}
 		}.to_json
 	end

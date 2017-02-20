@@ -78,7 +78,7 @@ const PlayerShow = React.createClass({
       end: end,
       tag: tag,
       videoId: index,
-      playerId: this.props.player.id
+      playerid: this.props.player.id
     }
     var urlStr = $.param(args);
     var state = this;
@@ -88,7 +88,7 @@ const PlayerShow = React.createClass({
         args.index = 0; 
         args.outOfRange = true;
         state.setState (args, ()=> {
-          browserHistory.push(player['slug'] + `?start=${start}&end=${end}&videoId=${0}&tag=${tag}&playerId=${player['id']}`);
+          browserHistory.push(player['slug'] + `?start=${start}&end=${end}&videoId=${0}&tag=${tag}&playerid=${player['id']}`);
         });
       } else if (data.play.mp4.includes("__")) {
         console.log(this.state);
@@ -97,7 +97,7 @@ const PlayerShow = React.createClass({
         var tags = _.compact(_.uniq(_.pluck(data.tags, 'value')));
         args.outOfRange = false;
         state.setState (args, ()=> {
-          browserHistory.push(player['slug'] + `?start=${start}&end=${end}&videoId=${index}&tag=${tag}&playerId=${player['id']}`);
+          browserHistory.push(player['slug'] + `?start=${start}&end=${end}&videoId=${index}&tag=${tag}&playerid=${player['id']}`);
           state.setState({
               index: index,
               tags: tags, 
@@ -116,11 +116,12 @@ const PlayerShow = React.createClass({
       var args = {
         start: 0,
         end: 82,
-        playerid: this.props.player['id']
+        playerid: this.props.player.id
       }
       var urlStr = $.param(args);
+      console.log('/api/v1/players/fetchGames?' + urlStr);
       $.getJSON('/api/v1/players/fetchGames?' + urlStr, (data) => {
-        console.log(data);
+        console.log(data.games.length);
         var returnedData = _.map(data.games, (game) => {
           game = game[0]
           return({
@@ -136,6 +137,7 @@ const PlayerShow = React.createClass({
   }, 
   generateSlider: function () {
     var state = this.state;
+    console.log(state['dates'].length);
       if (state['dates'].length) {
         var slider_props = {
           allowCross: false,

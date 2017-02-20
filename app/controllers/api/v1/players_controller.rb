@@ -114,15 +114,15 @@ class Api::V1::PlayersController < ApplicationController
 	def fetchPlay
 		tagType = params[:tag]
 		videoId = params[:videoId]
-		player = Player.find(params[:playerId])
+		player = Player.find(params[:playerid])
 		_start = params[:start].to_i
 		_end = params[:end].to_i
 		games = Game.where('home_team=? OR away_team=?', player['teams'][0], player['teams'][0]).reverse
-		games = games.select {
+		newgames = games.select do
 			|game|
 			game.plays.length > 0
-		}
-		tags = Play.joins(:game).where(:game_id => games).all.map {
+		end
+		tags = Play.joins(:game).where(:game_id => newgames).all.map {
 			|play|
 			mappedPlay = play.playermap.map { 
 				|mp| 
@@ -135,9 +135,9 @@ class Api::V1::PlayersController < ApplicationController
 			}.first
 			mappedPlay
 		}.compact.uniq
-		games = games.to_a[_start...(_end+1)]
-		games_ids = games.pluck(:id)
-		games_ids = games_ids.to_a[_start...(_end+1)]
+		newgames = newgames.to_a[_start...(_end+1)]
+		games_ids = newgames.pluck(:id)
+		games_ids = games_ids.to_a
 		play = Play.joins(:game).where(:game_id => games_ids).all.select { 
 			|play|  
 			playermapId = play.playermap.select { 
@@ -147,6 +147,7 @@ class Api::V1::PlayersController < ApplicationController
 			}
 			playermapId.length > 0
 		}.to_a.reverse
+		#puts play.length
 		if (videoId.to_i > play.length-1)
 			render json: {status: 'ERROR', message: 'Index out of range', play: [], tags: []}, status: :ok
 		elsif (play.length > 0)
