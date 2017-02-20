@@ -232,7 +232,7 @@ const PlayerShow = React.createClass({
         <div className="posRel">
           {(this.state.scrubbing) ? <EvilIcon name="ei-spinner-3" size="m" className="eIcon ico"/> : ""}
           <div className={(this.state.scrubbing) ? "blur" : ""}>
-            <video id = "stream_frame" className="video" onClick={this.control} onEnded={this.videoEnded} autoPlay={true} controls = {false} src={this.state.mp4} muted={true} />
+            <video id = "stream_frame" className="video" onClick={this.control} onEnded={this.videoEnded} autoPlay={true} controls = {false} src={this.state.mp4} muted={false} />
           </div>
         </div>);
   }, 
