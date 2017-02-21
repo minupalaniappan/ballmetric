@@ -6,10 +6,8 @@ import _ from 'underscore';
 import Slider, { Range, Handle } from 'rc-slider';
 import Tooltip from 'rc-tooltip';
 const Tag = require('./Tag.jsx').default
-const Stream = require('./Stream.jsx').default
 const moment = extendMoment(Moment);
 const EvilIcon = require('./EvilIcon.jsx').default
-const FetchTagObject = require ('../mapping.js').FetchTagObject
 
 const PlayerShow = React.createClass({
   propTypes: {
