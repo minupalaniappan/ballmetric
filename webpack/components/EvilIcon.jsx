@@ -8,6 +8,7 @@ const EvilIcon = React.createClass({
         name: React.PropTypes.string.isRequired,
         className: React.PropTypes.string,
         funcClick: React.PropTypes.func,
+        idAttr: React.PropTypes.string
     },
     getInitialState: function () {
         return ({
@@ -32,7 +33,7 @@ const EvilIcon = React.createClass({
             </svg>
         );
         return  (
-            <div className={klass} onClick={this.props.funcClick} onMouseEnter={this.hoverFunc}>
+            <div className={klass} onClick={this.props.funcClick} onMouseEnter={this.hoverFunc} id={this.props.idAttr}>
             {this.wrapSpinner(Icon, klass)}
             </div>
         );

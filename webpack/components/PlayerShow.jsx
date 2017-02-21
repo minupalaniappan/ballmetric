@@ -26,14 +26,15 @@ const PlayerShow = React.createClass({
         tags: [],
         dates: [], 
         scrubbing: false,
-        outOfRange: false 
+        outOfRange: false, 
+        playNext: false 
     })
   }, 
   componentWillMount: function () {
     this.generateDatesOfGames((input) => {
       this.setDates(input);
     });
-    this.engine(this.state.start, this.state.end, this.state.tag, this.state.index);
+    this.setTimeOutEngine(this.state.start, this.state.end, this.state.tag, this.state.index);
   },
   headBack: function () {
     browserHistory.push('/players');
@@ -56,6 +57,7 @@ const PlayerShow = React.createClass({
   dateListener: function (event, elems) {
     this.setState({
       scrubbing: true,
+      playNext: false,
       outOfRange: false
     }); 
     if (document.getElementById("stream_frame"))
@@ -67,11 +69,26 @@ const PlayerShow = React.createClass({
     }); 
     var start = elems[0];
     var end = elems[1];
-    this.engine(start, end, "", 0)
-    if (document.getElementById("stream_frame").src !== "") {
-      document.getElementById("stream_frame").play();
-    }
+    this.setTimeOutEngine(start, end, "", 0)
   },
+  fastForward: function () {
+    var that = this;
+    this.setState({
+      playNext: false
+    }, ()=> {
+      that.engine(that.state.start, that.state.end, that.state.tag, that.state.index);
+    });
+  }, 
+  setTimeOutEngine: function (start, end, tag, index) {
+    var that = this;
+    that.setState({
+      playNext: true
+    }, () => {
+      setTimeout(function(){
+        that.engine(start, end, tag, index);
+      }, 5000);
+    }); 
+  }, 
   engine: function (start, end, tag, index) {
     var args = {
       start: start,
@@ -91,8 +108,7 @@ const PlayerShow = React.createClass({
           browserHistory.push(player['slug'] + `?start=${start}&end=${end}&videoId=${0}&tag=${tag}&playerid=${player['id']}`);
         });
       } else if (data.play.mp4.includes("__")) {
-        console.log(this.state);
-        state.engine(start, end, tag, (index+1));
+        state.setTimeOutEngine(start, end, tag, (index+1));
       } else {
         var tags = _.compact(_.uniq(_.pluck(data.tags, 'value')));
         args.outOfRange = false;
@@ -105,6 +121,9 @@ const PlayerShow = React.createClass({
           })
         }); 
       }
+      state.setState({
+        playNext: false
+      });
     });
   },
   setDates: function (input) {
@@ -119,9 +138,7 @@ const PlayerShow = React.createClass({
         playerid: this.props.player.id
       }
       var urlStr = $.param(args);
-      console.log('/api/v1/players/fetchGames?' + urlStr);
       $.getJSON('/api/v1/players/fetchGames?' + urlStr, (data) => {
-        console.log(data.games.length);
         var returnedData = _.map(data.games, (game) => {
           game = game[0]
           return({
@@ -137,7 +154,6 @@ const PlayerShow = React.createClass({
   }, 
   generateSlider: function () {
     var state = this.state;
-    console.log(state['dates'].length);
       if (state['dates'].length) {
         var slider_props = {
           allowCross: false,
@@ -180,7 +196,7 @@ const PlayerShow = React.createClass({
     var start = this.state.start; 
     var end = this.state.end;
     index = parseInt(this.state.index) + 1;
-    this.engine(start, end, tag, index)
+    this.setTimeOutEngine(start, end, tag, index)
 
   },
   bodyBlock: function () {
@@ -199,7 +215,7 @@ const PlayerShow = React.createClass({
     var tag = event.props.tag;
     var start = this.state.start;
     var end = this.state.end;
-    this.engine(start, end, tag, 0)
+    this.setTimeOutEngine(start, end, tag, 0)
   },
   generateTags: function () {
     var elements = this.state.tags.map((tag_) => {
@@ -227,6 +243,24 @@ const PlayerShow = React.createClass({
           </div>
         </div>
       );
+    else if (this.state.mp4 === "" && this.state.playNext)
+      return (
+        <div className="bg-back">
+          <div className = "center-icon">
+            <EvilIcon name="ei-arrow-right" size="m" className="eIcon ico topDown" funcClick={this.fastForward} idAttr={"playNext"}/>
+            <p>Loading your play...</p>
+          </div>
+        </div>
+      )
+    else if (this.state.playNext)
+      return (
+        <div className="posRel">
+          {(this.state.playNext) ? <EvilIcon name="ei-arrow-right" size="m" className="eIcon ico topDown" funcClick={this.fastForward} idAttr={"playNext"}/> : ""}
+          <div className={(this.state.playNext) ? "blur" : ""}>
+            <video id = "stream_frame" className="video" onClick={this.control} onEnded={this.videoEnded} autoPlay={true} controls = {false} src={this.state.mp4} muted={false} />
+          </div>
+        </div>
+      )
     else
       return (
         <div className="posRel">
