@@ -190,6 +190,9 @@ const PlayerShow = React.createClass({
     else
       event.target.pause();
   },
+  fullscreen: function (event) {
+    event.target.webkitRequestFullScreen();
+  },
   videoEnded: function () {
     var index; 
     var tag = this.state.tag; 
@@ -257,7 +260,7 @@ const PlayerShow = React.createClass({
         <div className="posRel">
           {(this.state.playNext) ? <EvilIcon name="ei-arrow-right" size="m" className="eIcon ico topDown" funcClick={this.fastForward} idAttr={"playNext"}/> : ""}
           <div className={(this.state.playNext) ? "blur" : ""}>
-            <video id = "stream_frame" className="video" onClick={this.control} onEnded={this.videoEnded} autoPlay={true} controls = {false} src={this.state.mp4} muted={false} />
+            <video id = "stream_frame" className="video" onClick={this.control} allowFullScreen={true} onDoubleClick = {this.fullscreen} onEnded={this.videoEnded} autoPlay={true} controls = {false} src={this.state.mp4} muted={false} />
           </div>
         </div>
       )
@@ -266,7 +269,7 @@ const PlayerShow = React.createClass({
         <div className="posRel">
           {(this.state.scrubbing) ? <EvilIcon name="ei-spinner-3" size="m" className="eIcon ico"/> : ""}
           <div className={(this.state.scrubbing) ? "blur" : ""}>
-            <video id = "stream_frame" className="video" onClick={this.control} onEnded={this.videoEnded} autoPlay={true} controls = {false} src={this.state.mp4} muted={false} />
+            <video id = "stream_frame" className="video" onClick={this.control} allowFullScreen={true} onDoubleClick = {this.fullscreen} onEnded={this.videoEnded} autoPlay={true} controls = {false} src={this.state.mp4} muted={false} />
           </div>
         </div>);
   }, 
