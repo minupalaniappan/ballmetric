@@ -336,6 +336,8 @@ video {
 }
 
 .posRel {
+	text-align: center; 
+	position: relative;
 	position: relative;
 	.ico {
 		position: absolute;
@@ -345,9 +347,10 @@ video {
 		margin-bottom: auto;
 		left: 0;
 		right: 0;
-		top: 0; 
 		bottom: 0;
 		z-index: 999;
+		top: 35%;
+
 	}
 }
 

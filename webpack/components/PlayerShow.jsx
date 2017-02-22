@@ -6,6 +6,7 @@ import _ from 'underscore';
 import Slider, { Range, Handle } from 'rc-slider';
 import Tooltip from 'rc-tooltip';
 const Tag = require('./Tag.jsx').default
+const ProgressBar = require('progressbar.js');
 const moment = extendMoment(Moment);
 const EvilIcon = require('./EvilIcon.jsx').default
 
@@ -82,6 +83,16 @@ const PlayerShow = React.createClass({
     that.setState({
       playNext: true
     }, () => {
+      var bar = new ProgressBar.Line(document.getElementById("loadingBar"), {
+        strokeWidth: 1,
+        easing: 'easeInOut',
+        duration: 5000,
+        color: '#2eefa8',
+        trailColor: '#eee',
+        trailWidth: 1,
+        svgStyle: {width: '40%', height: '100%'}
+      });
+      bar.animate(1.0);
       setTimeout(function(){
         that.engine(start, end, tag, index);
       }, 5000);
@@ -250,13 +261,18 @@ const PlayerShow = React.createClass({
           <div className = "center-icon">
             <EvilIcon name="ei-arrow-right" size="m" className="eIcon ico topDown" funcClick={this.fastForward} idAttr={"playNext"}/>
             <p>Loading your play...</p>
+            <div id = "loadingBar"></div>
           </div>
         </div>
       )
     else if (this.state.playNext)
       return (
         <div className="posRel">
-          {(this.state.playNext) ? <EvilIcon name="ei-arrow-right" size="m" className="eIcon ico topDown" funcClick={this.fastForward} idAttr={"playNext"}/> : ""}
+          {(this.state.playNext) ? 
+            <div className="ico topDown">
+              <EvilIcon name="ei-arrow-right" size="m" className="eIcon" funcClick={this.fastForward} idAttr={"playNext"}/>
+              <div id = "loadingBar"></div>
+            </div> : ""}
           <div className={(this.state.playNext) ? "blur" : ""}>
             <video id = "stream_frame" className="video" onClick={this.control} allowFullScreen={true} onDoubleClick = {this.fullscreen} onEnded={this.videoEnded} autoPlay={true} controls = {false} src={this.state.mp4} muted={false} />
           </div>
@@ -265,7 +281,7 @@ const PlayerShow = React.createClass({
     else
       return (
         <div className="posRel">
-          {(this.state.scrubbing) ? <EvilIcon name="ei-spinner-3" size="m" className="eIcon ico"/> : ""}
+          {(this.state.scrubbing) ? <div className="ico topDown"><EvilIcon name="ei-spinner-3" size="m" className="eIcon"/></div> : ""}
           <div className={(this.state.scrubbing) ? "blur" : ""}>
             <video id = "stream_frame" className="video" onClick={this.control} allowFullScreen={true} onDoubleClick = {this.fullscreen} onEnded={this.videoEnded} autoPlay={true} controls = {false} src={this.state.mp4} muted={false} />
           </div>
