@@ -143,7 +143,7 @@ class Api::V1::PlayersController < ApplicationController
 			playermapId = play.playermap.select { 
 				|mp| 
 				mp = mp.as_json
-				mp['id'] == player['id'] and (classifyTag(mp['tags'])['value'] == tagType or tagType == "")
+				mp['id'] == player['id'] and (classifyTag(mp['tags'])['value'] == tagType or tagType == "All")
 			}
 			playermapId.length > 0
 		}.to_a.reverse

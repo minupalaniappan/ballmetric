@@ -80,11 +80,6 @@ html, body {
 	color: white; 
 }
 
-.rc-slider-mark-text {
-	width: 18%;
-    margin-left: -9%;
-}
-
 .content {
 	padding-top: 30px;
 }
@@ -270,25 +265,25 @@ video {
 }
 
 .tagList {
-	.row-tag {
-		padding: 8px 0px; 
-		display: inline-block;
-		margin-right: 25px;
-		.tag-text {
-			color: white;
-			font-family: "Circular Light";
-			font-size: 1.2em;
-			&.active {
-				color: $green;
-			}
-		}
-	}
-	.row-tag:hover {
-		cursor: pointer; 
-		p {
-			color: $green;
-		}
-	}
+	border: none;
+	border-radius: 3px; 
+	border: 2px solid $green;
+	background: none;
+	color: white; 
+	font-family: "Circular Regular";
+	font-size: 1.5em;
+	-webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 10px;
+    &:focus {
+    	outline: none;
+    }
+}
+
+.inlMargin {
+	display: inline-block;
+	margin: 10px 0px;
 }
 
 .bg-back {
@@ -339,6 +334,8 @@ video {
 	text-align: center; 
 	position: relative;
 	position: relative;
+	width: 700px; 
+	height: 400px;
 	.ico {
 		position: absolute;
 		margin-left: auto;
@@ -349,8 +346,8 @@ video {
 		right: 0;
 		bottom: 0;
 		z-index: 999;
-		top: 35%;
-
+		height: 100%;
+		color: $green;
 	}
 }
 

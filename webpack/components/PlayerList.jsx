@@ -12,7 +12,7 @@ var PlayerList = React.createClass({
       var args = {
         start: 0, 
         end: 81,
-        tag: "",
+        tag: "All",
         videoId: 0, 
         playerId: parseInt(player['id'])
       }

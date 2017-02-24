@@ -3,8 +3,6 @@ import { extendMoment } from 'moment-range';
 import React, { PropTypes } from 'react';
 import { browserHistory } from 'react-router';
 import _ from 'underscore';
-import Slider, { Range, Handle } from 'rc-slider';
-import Tooltip from 'rc-tooltip';
 const Tag = require('./Tag.jsx').default
 const ProgressBar = require('progressbar.js');
 const moment = extendMoment(Moment);
@@ -20,20 +18,19 @@ const PlayerShow = React.createClass({
         start: this.props.prependedArguments.start,
         end: this.props.prependedArguments.end,
         tag: this.props.prependedArguments.tag,
-        index: this.props.prependedArguments.videoId, 
+        videoId: this.props.prependedArguments.videoId, 
         mp4: "", 
         tags: [],
         dates: [], 
-        scrubbing: false,
         outOfRange: false, 
-        playNext: false 
+        loading: true
     })
   }, 
   componentWillMount: function () {
     this.generateDatesOfGames((input) => {
       this.setDates(input);
     });
-    this.setTimeOutEngine(this.state.start, this.state.end, this.state.tag, this.state.index);
+    this.engine(this.state.start, this.state.end, this.state.tag, this.state.videoId);
   },
   headBack: function () {
     browserHistory.push('/players');
@@ -53,86 +50,51 @@ const PlayerShow = React.createClass({
       </div>
     );
   },
-  dateListener: function (event, elems) {
-    this.setState({
-      scrubbing: true,
-      playNext: false,
-      outOfRange: false
-    }); 
-    if (document.getElementById("stream_frame"))
-      document.getElementById("stream_frame").pause();
-  },  
-  runEngine: function (event, elems) {
-    this.setState({
-      scrubbing: false
-    }); 
-    var start = elems[0];
-    var end = elems[1];
-    this.setTimeOutEngine(start, end, "", 0)
-  },
-  fastForward: function () {
-    var that = this;
-    this.setState({
-      playNext: false
-    }, ()=> {
-      that.engine(that.state.start, that.state.end, that.state.tag, that.state.index);
-    });
-  }, 
-  setTimeOutEngine: function (start, end, tag, index) {
-    var that = this;
-    that.setState({
-      playNext: true
-    }, () => {
-      var bar = new ProgressBar.Line(document.getElementById("loadingBar"), {
-        strokeWidth: 1,
-        easing: 'easeInOut',
-        duration: 5000,
-        color: '#2eefa8',
-        trailColor: '#eee',
-        trailWidth: 1,
-        svgStyle: {width: '40%', height: '100%'}
-      });
-      bar.animate(1.0);
-      setTimeout(function(){
-        that.engine(start, end, tag, index);
-      }, 5000);
-    }); 
-  }, 
-  engine: function (start, end, tag, index) {
-    var args = {
-      start: start,
-      end: end,
-      tag: tag,
-      videoId: index,
-      playerid: this.props.player.id
-    }
-    var urlStr = $.param(args);
-    var state = this;
-    var player = this.props.player;
-    $.getJSON('/api/v1/players/fetchPlay?' + urlStr, function(data) {
+  fetchJSON: function (args, player) {
+    var url = $.param(args);
+    return ($.getJSON('/api/v1/players/fetchPlay?' + url).then((data) => {
       if (data['status'] === "ERROR") {
-        args.index = 0; 
+        args.videoId = 0; 
         args.outOfRange = true;
-        state.setState (args, ()=> {
-          browserHistory.push(player['slug'] + `?start=${start}&end=${end}&videoId=${0}&tag=${tag}&playerid=${player['id']}`);
+        this.setState (args, ()=> {
+          browserHistory.push(player['slug'] + `?start=${this.state.start}&end=${this.state.end}&videoId=${0}&tag=${this.state.tag}&playerid=${player['id']}`);
         });
       } else if (data.play.mp4.includes("__")) {
-        state.setTimeOutEngine(start, end, tag, (index+1));
+        return (false);
       } else {
         var tags = _.compact(_.uniq(_.pluck(data.tags, 'value')));
         args.outOfRange = false;
-        state.setState (args, ()=> {
-          browserHistory.push(player['slug'] + `?start=${start}&end=${end}&videoId=${index}&tag=${tag}&playerid=${player['id']}`);
-          state.setState({
-              index: index,
+        this.setState (args, ()=> {
+          browserHistory.push(player['slug'] + `?start=${this.state.start}&end=${this.state.end}&videoId=${this.state.videoId}&tag=${this.state.tag}&playerid=${this.state.playerid}`);
+          this.setState({
               tags: tags, 
               mp4: data.play.mp4
           })
         }); 
+      } 
+      return (true);
+    }));
+  },
+  engine: function (start, end, tag, videoId) {
+    var args = {
+      start: start,
+      end: end,
+      videoId: videoId,
+      playerid: this.props.player.id,
+      tag: tag
+    }
+    var flag_;
+    this.fetchJSON(args, this.props.player).then((flag) => {
+      if (flag) {
+        this.setState({
+          loading: false, 
+        }, ()=> {
+          setTimeout(function(){ document.getElementById("stream_frame").controls = true; }, 2000);
+        });
+      } else {
+        this.engine(start, end, tag, parseInt(videoId) + 1)
       }
-      state.setState({
-        playNext: false
-      });
+      
     });
   },
   setDates: function (input) {
@@ -161,38 +123,6 @@ const PlayerShow = React.createClass({
 
       });
   }, 
-  generateSlider: function () {
-    var state = this.state;
-      if (state['dates'].length) {
-        var slider_props = {
-          allowCross: false,
-          pushable: false,
-          min: 0,
-          max: state.dates.length-1,
-          defaultValue: [parseInt(state.start),parseInt(state.end)],
-          onChange: this.dateListener.bind(null, this),
-          onAfterChange: this.runEngine.bind(null, this),
-          handle: (props) => {
-            const { value, dragging, index } = props;
-            return (
-              <Tooltip
-                overlay={state.dates[props.value]['date_object']}
-                visible={dragging}
-                placement="top"
-                key={index}
-              >
-                <Handle {...props} />
-              </Tooltip>
-            );
-        }
-      }
-      return (
-        <div className = "tier-slider">
-          <Range {...slider_props}/>
-        </div>
-      );
-    }
-  }, 
   control: function (event) {
     if (event.target.paused)
       event.target.play();
@@ -203,45 +133,57 @@ const PlayerShow = React.createClass({
     event.target.webkitRequestFullScreen();
   },
   videoEnded: function () {
-    var index; 
+    var videoId; 
     var tag = this.state.tag; 
     var start = this.state.start; 
     var end = this.state.end;
-    index = parseInt(this.state.index) + 1;
-    this.setTimeOutEngine(start, end, tag, index)
-
+    videoId = parseInt(this.state.videoId) + 1;
+    this.engine(start, end, tag, videoId)
+    this.setState({
+      loading: true
+    }, ()=> {
+      if (document.getElementById("stream_frame")) {
+        document.getElementById("stream_frame").controls = false;
+      }
+    })
   },
   bodyBlock: function () {
-    var slider = this.generateSlider();
-    var videoStream = this.videoStream();
     var tagStream = this.generateTags();
+    var videoStream = this.videoStream();
     return (
       <div style = {{margin: "10px 0px"}}>
-        <div className="bg-back">{(videoStream) ? (videoStream) : (<p>Scrubbing</p>)}</div>
-        { slider }
+        { videoStream }
         { tagStream }
       </div>
     )
   },
   activateFilter: function (event) {
-    var tag = event.props.tag;
+    var tag = event.target.value;
     var start = this.state.start;
     var end = this.state.end;
-    this.setTimeOutEngine(start, end, tag, 0)
+    this.setState({
+      tag: tag, 
+      start: start,
+      end: end, 
+      loading: true
+    }, () => {
+      this.engine(start, end, tag, 0);
+    })
   },
   generateTags: function () {
-    var elements = this.state.tags.map((tag_) => {
+    var options = this.state.tags.map((tag_) => {
       return (
-        <Tag tag={tag_}
-             active={this.state.tag === tag_}
-             activateFilter={this.activateFilter}
+        <option value={tag_}
              key={Math.random()}
-        />
+        >{tag_}</option>
       )
     });
     return (
-      <div className = "tagList">
-        { elements }
+      <div className = "inlMargin">
+        <select value={this.state.tag} onChange={this.activateFilter} className = "tagList">
+          <option value={"All"} key={Math.random()}>All</option>
+          { options }
+        </select>
       </div>
     )
   },  
@@ -250,41 +192,15 @@ const PlayerShow = React.createClass({
       return (
         <div className="bg-back">
           <div className = "center-icon">
-            <EvilIcon name="ei-question" size="m" className="eIcon"/>
-            <p>Cannot find a play</p>
+            <EvilIcon name="ei-check" size="m" className="eIcon"/>
+            <p>Loop is done</p>
           </div>
         </div>
       );
-    else if (this.state.mp4 === "" && this.state.playNext)
-      return (
-        <div className="bg-back">
-          <div className = "center-icon">
-            <EvilIcon name="ei-arrow-right" size="m" className="eIcon ico topDown" funcClick={this.fastForward} idAttr={"playNext"}/>
-            <p>Loading your play...</p>
-            <div id = "loadingBar"></div>
-          </div>
-        </div>
-      )
-    else if (this.state.playNext)
-      return (
-        <div className="posRel">
-          {(this.state.playNext) ? 
-            <div className="ico topDown">
-              <EvilIcon name="ei-arrow-right" size="m" className="eIcon" funcClick={this.fastForward} idAttr={"playNext"}/>
-              <div id = "loadingBar"></div>
-            </div> : ""}
-          <div className={(this.state.playNext) ? "blur" : ""}>
-            <video id = "stream_frame" className="video" onClick={this.control} allowFullScreen={true} onDoubleClick = {this.fullscreen} onEnded={this.videoEnded} autoPlay={true} controls = {false} src={this.state.mp4} muted={false} />
-          </div>
-        </div>
-      )
     else
       return (
         <div className="posRel">
-          {(this.state.scrubbing) ? <div className="ico topDown"><EvilIcon name="ei-spinner-3" size="m" className="eIcon"/></div> : ""}
-          <div className={(this.state.scrubbing) ? "blur" : ""}>
-            <video id = "stream_frame" className="video" onClick={this.control} allowFullScreen={true} onDoubleClick = {this.fullscreen} onEnded={this.videoEnded} autoPlay={true} controls = {false} src={this.state.mp4} muted={false} />
-          </div>
+          {(this.state.loading) ? <EvilIcon name="ei-spinner-3" size="m" className="ico"/> : <video id = "stream_frame" className="video" onClick={this.control} allowFullScreen={true} onDoubleClick = {this.fullscreen} onEnded={this.videoEnded} autoPlay={true} src={this.state.mp4} muted={true} />}
         </div>);
   }, 
   render: function() {
