@@ -8,5 +8,4 @@
 seeds = Dir[File.join(Rails.root, 'db', 'seeds', '*.rb')]
 seeds.sort.each { 
 	|seed| load seed 
-	puts "hi"
 }
