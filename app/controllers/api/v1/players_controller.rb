@@ -138,6 +138,7 @@ class Api::V1::PlayersController < ApplicationController
 		newgames = newgames.to_a[_start...(_end+1)]
 		games_ids = newgames.pluck(:id)
 		games_ids = games_ids.to_a
+		puts Play.joins(:game).where(:game_id => games_ids).all.length
 		play = Play.joins(:game).where(:game_id => games_ids).all.select { 
 			|play|  
 			playermapId = play.playermap.select { 
@@ -147,7 +148,7 @@ class Api::V1::PlayersController < ApplicationController
 			}
 			playermapId.length > 0
 		}.to_a.reverse
-		#puts play.length
+		puts play.length
 		if (videoId.to_i > play.length-1)
 			render json: {status: 'ERROR', message: 'Index out of range', play: [], tags: []}, status: :ok
 		elsif (play.length > 0)
@@ -165,7 +166,7 @@ class Api::V1::PlayersController < ApplicationController
 		_players_wUrl = _players.map {
 			|player|
 			player = player['player']
-			player['url'] = Player.where(urlName: player['urlName'])[0].base_uri
+			player['url'] = Player.where("urlName": player['urlName'])[0].base_uri
 			player
 		}
 
