@@ -138,17 +138,16 @@ class Api::V1::PlayersController < ApplicationController
 		newgames = newgames.to_a[_start...(_end+1)]
 		games_ids = newgames.pluck(:id)
 		games_ids = games_ids.to_a
-		puts "HIII" + Play.joins(:game).where(:game_id => games_ids).all.length.to_s
 		play = Play.joins(:game).where(:game_id => games_ids).all.select { 
 			|play|  
 			playermapId = play.playermap.select { 
 				|mp| 
 				mp = mp.as_json
+				puts mp
 				mp['id'] == player['id'] and (classifyTag(mp['tags'])['value'] == tagType or tagType == "All")
 			}
 			playermapId.length > 0
 		}.to_a.reverse
-		puts "YOOO" + play.length.to_s
 		if (videoId.to_i > play.length-1)
 			render json: {status: 'ERROR', message: 'Index out of range', play: [], tags: []}, status: :ok
 		elsif (play.length > 0)
