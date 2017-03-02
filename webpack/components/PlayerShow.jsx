@@ -200,7 +200,7 @@ const PlayerShow = React.createClass({
     else
       return (
         <div className="posRel">
-          {(this.state.loading) ? <EvilIcon name="ei-spinner-3" size="m" className="ico"/> : <video id = "stream_frame" className="video" onClick={this.control} allowFullScreen={true} onDoubleClick = {this.fullscreen} onEnded={this.videoEnded} autoPlay={true} src={this.state.mp4} muted={true} />}
+          {(this.state.loading) ? <EvilIcon name="ei-spinner-3" size="m" className="ico"/> : <video id = "stream_frame" className="video" onClick={this.control} allowFullScreen={true} onDoubleClick = {this.fullscreen} onEnded={this.videoEnded} autoPlay={true} src={this.state.mp4} muted={false} />}
         </div>);
   }, 
   render: function() {
