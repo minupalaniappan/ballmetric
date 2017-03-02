@@ -7,5 +7,5 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 seeds = Dir[File.join(Rails.root, 'db', 'seeds', '*.rb')]
 seeds.sort.each { 
-	|seed| load seed 
+  |seed| load seed 
 }
